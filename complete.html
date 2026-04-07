@@ -1,14 +1,30 @@
-<body style="background:#000; color:#fff; text-align:center; padding:50px 20px;">
-    <h1 style="letter-spacing:-1px;">Application Complete!</h1>
-    <div style="background:#111; padding:40px; border-radius:20px; border:1px solid #CCFF00; margin:30px auto; max-width:400px;">
+<body style="background:#000; color:#fff; text-align:center; padding:50px 20px; font-family:sans-serif;">
+    <h1 style="letter-spacing:-1px; color:#CCFF00;">Application Complete!</h1>
+    
+    <div style="background:#111; padding:40px 20px; border-radius:24px; border:1px solid #CCFF00; margin:30px auto; max-width:400px; box-shadow: 0 0 20px rgba(204,255,0,0.2);">
         <p style="color:#888; font-size:14px; margin-bottom:10px;">MooM 파트너 고유 식별 코드</p>
-        <h2 id="display-code" style="color:#CCFF00; font-size:48px; margin:0; letter-spacing:3px;">발급중...</h2>
-        <p style="margin-top:30px; font-size:15px; color:#bbb;">
-            오픈방 입장 시 닉네임을 반드시<br>
-            <span style="color:#CCFF00; font-weight:bold;">[카테고리 / 코드]</span>로 설정해주세요.
-        </p>
+        <h2 id="display-code" style="color:#CCFF00; font-size:48px; margin:0; letter-spacing:5px;">발급중...</h2>
+        
+        <div style="margin-top:30px; padding:15px; background:#222; border-radius:12px; border-left:4px solid #CCFF00; text-align:left;">
+            <p style="margin:0; font-size:13px; color:#fff; line-height:1.6;">
+                ⚠️ **주의: 위 코드를 반드시 캡처하세요.**<br>
+                오픈톡방 닉네임을 <span style="color:#CCFF00;">[카테고리/코드]</span>로 설정하지 않을 경우, 데이터 연동 오류로 **모든 협찬 대상에서 자동 제외**됩니다.
+            </p>
+        </div>
     </div>
-    <a href="카톡방링크" style="display:inline-block; padding:18px 40px; background:#CCFF00; color:#000; text-decoration:none; border-radius:10px; font-weight:900;">오픈톡방 입장하기</a>
+
+    <a href="여기에_오픈톡방_링크" style="display:inline-block; padding:20px 40px; background:#CCFF00; color:#000; text-decoration:none; border-radius:15px; font-weight:900; font-size:18px; animation: pulse 1.5s infinite;">
+        지금 바로 오픈톡방 입장하기
+    </a>
+
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(204, 255, 0, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(204, 255, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(204, 255, 0, 0); }
+        }
+    </style>
+
     <script>
         const code = sessionStorage.getItem('moom_partner_code');
         document.getElementById('display-code').innerText = code || "ERROR";
