@@ -119,7 +119,7 @@
             document.getElementById('submitBtn').innerText = "처리 중...";
             document.getElementById('submitBtn').disabled = true;
 
-            fetch('여기에_앱스스크립트_URL_입력', {
+            fetch('https://script.google.com/macros/s/AKfycby56JgtyEMemRVzC8QfE2iqu3cWx8YRXzTCLEynYinN95RSejd1dhNpXOdClQTG8KX0/exec', {
                 method: 'POST',
                 body: JSON.stringify(data)
             })
