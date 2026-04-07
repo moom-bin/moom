@@ -15,28 +15,58 @@
 
     <style>
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        body { background:#000; color:#fff; font-family:'Pretendard', sans-serif; text-align:center; padding:40px 20px; margin:0; line-height:1.6; }
-        .form-box { background:#111; padding:30px 20px; border-radius:24px; border:1px solid #CCFF00; max-width:450px; margin:auto; box-shadow: 0 20px 40px rgba(204, 255, 0, 0.05); text-align:left; }
-        h1 { color:#CCFF00; font-size:28px; margin-bottom:10px; text-align:center; letter-spacing:-1px; }
+        
+        /* [수정] 배경: 단순 검정 -> 깊이감 있는 그라데이션 */
+        body { 
+            background: radial-gradient(circle at top, #1a1a1a 0%, #000000 100%); 
+            color:#fff; font-family:'Pretendard', sans-serif; text-align:center; padding:40px 20px; margin:0; line-height:1.6; 
+            min-height: 100vh;
+        }
+
+        /* [수정] 박스: 유리 질감(Glassmorphism) 및 네온 라인 강화 */
+        .form-box { 
+            background: rgba(25, 25, 25, 0.8); 
+            backdrop-filter: blur(10px);
+            padding:30px 20px; border-radius:24px; 
+            border:1px solid rgba(204, 255, 0, 0.3); 
+            max-width:450px; margin:auto; 
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 15px rgba(204, 255, 0, 0.05); 
+            text-align:left; 
+        }
+
+        h1 { color:#CCFF00; font-size:28px; margin-bottom:10px; text-align:center; letter-spacing:-1px; text-shadow: 0 0 10px rgba(204, 255, 0, 0.3); }
         p.sub { color:#888; font-size:14px; margin-bottom:30px; text-align:center; }
         
         label { display:block; font-size:13px; color:#CCFF00; font-weight:700; margin-top:20px; margin-bottom:8px; }
+
+        /* [수정] 입력창: 더 어둡게 처리하여 대비 극대화 */
         input, select, textarea { 
-            width:100%; padding:14px; box-sizing:border-box; border-radius:12px; border:1px solid #222; 
-            background:#1a1a1a; color:#fff; font-size:15px; transition:0.2s;
+            width:100%; padding:14px; box-sizing:border-box; border-radius:12px; 
+            border:1px solid #333; 
+            background:#0a0a0a; color:#fff; font-size:15px; transition:0.2s;
         }
-        input:focus, select:focus { border-color:#CCFF00; outline:none; background:#222; }
+        input:focus, select:focus { border-color:#CCFF00; outline:none; background:#111; box-shadow: 0 0 8px rgba(204, 255, 0, 0.2); }
         
         .channel-group { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:5px; }
         .checkbox-group { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-        .checkbox-item { background:#1a1a1a; padding:8px 15px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; }
-        input[type="checkbox"] { width:auto; margin-right:5px; display:none; }
-        input[type="checkbox"]:checked + label { color:#000; background:#CCFF00; border-color:#CCFF00; }
-        .check-label { display:inline-block; padding:8px 15px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; background:#1a1a1a; color:#888; transition:0.2s; }
+        
+        input[type="checkbox"] { display:none; }
+        .check-label { display:inline-block; padding:8px 18px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; background:#111; color:#888; transition:0.2s; }
+        input[type="checkbox"]:checked + .check-label { color:#000; background:#CCFF00; border-color:#CCFF00; font-weight:bold; }
 
-        .agree-box { margin-top:30px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; }
-        .btn-submit { width:100%; padding:20px; background:#CCFF00; color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:30px; font-size:18px; box-shadow: 0 10px 20px rgba(204, 255, 0, 0.2); }
-        .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; box-shadow:none; }
+        .agree-box { margin-top:30px; padding:15px; background:rgba(255,255,255,0.03); border-radius:12px; font-size:12px; color:#777; border:1px solid #222; }
+
+        /* [수정] 버튼: 입체감 있는 그라데이션 및 네온 효과 */
+        .btn-submit { 
+            width:100%; padding:20px; 
+            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%); 
+            color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; 
+            margin-top:30px; font-size:18px; 
+            box-shadow: 0 10px 25px rgba(204, 255, 0, 0.25); 
+            transition: 0.3s;
+        }
+        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(204, 255, 0, 0.4); }
+        .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; box-shadow:none; opacity: 0.6; }
     </style>
 </head>
 <body>
