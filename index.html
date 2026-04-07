@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MooM Partner Application</title>
+    <style>
+        body { background:#000; color:#fff; font-family:sans-serif; text-align:center; padding:50px 20px; }
+        .form-box { background:#111; padding:30px; border-radius:20px; border:1px solid #CCFF00; max-width:400px; margin:auto; }
+        input { width:90%; padding:12px; margin:10px 0; border-radius:8px; border:none; }
+        button { width:100%; padding:15px; background:#CCFF00; color:#000; font-weight:900; border:none; border-radius:10px; cursor:pointer; margin-top:20px; }
+    </style>
+</head>
+<body>
+    <h1>MooM Partner Join</h1>
+    <div class="form-box">
+        <input type="text" id="name" placeholder="성함 (본명)" required>
+        <input type="text" id="insta" placeholder="인스타그램 ID (@입제외)" required>
+        <input type="number" id="followers" placeholder="팔로워 수 (숫자만)" required>
+        <button onclick="submitForm()">신청하고 ID 발급받기</button>
+    </div>
+
+    <script>
+        function submitForm() {
+            const data = {
+                name: document.getElementById('name').value,
+                insta: document.getElementById('insta').value,
+                followers: document.getElementById('followers').value
+            };
+            
+            // 시트로 데이터 전송 (Apps Script URL 주소 필요)
+            fetch('https://script.google.com/macros/s/AKfycbx3y1T5d5IyA775tOjg1QAsSetiBJbJuAf3nzuIMqE7-BIf4WfoFxkiSRqHAJCumY0b/exec
+', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(res => {
+                // 발급된 ID를 세션에 저장하고 완료 페이지로 이동
+                sessionStorage.setItem('moom_partner_code', res.id);
+                location.href = 'complete.html';
+            });
+        }
+    </script>
+</body>
+</html>
