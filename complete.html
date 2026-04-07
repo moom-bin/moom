@@ -1,0 +1,16 @@
+<body style="background:#000; color:#fff; text-align:center; padding:50px 20px;">
+    <h1 style="letter-spacing:-1px;">Application Complete!</h1>
+    <div style="background:#111; padding:40px; border-radius:20px; border:1px solid #CCFF00; margin:30px auto; max-width:400px;">
+        <p style="color:#888; font-size:14px; margin-bottom:10px;">MooM 파트너 고유 식별 코드</p>
+        <h2 id="display-code" style="color:#CCFF00; font-size:48px; margin:0; letter-spacing:3px;">발급중...</h2>
+        <p style="margin-top:30px; font-size:15px; color:#bbb;">
+            오픈방 입장 시 닉네임을 반드시<br>
+            <span style="color:#CCFF00; font-weight:bold;">[카테고리 / 코드]</span>로 설정해주세요.
+        </p>
+    </div>
+    <a href="카톡방링크" style="display:inline-block; padding:18px 40px; background:#CCFF00; color:#000; text-decoration:none; border-radius:10px; font-weight:900;">오픈톡방 입장하기</a>
+    <script>
+        const code = sessionStorage.getItem('moom_partner_code');
+        document.getElementById('display-code').innerText = code || "ERROR";
+    </script>
+</body>
