@@ -1,173 +1,183 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MooM Partner Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MooM : Made out of Max</title>
     
-    <meta property="og:title" content="MooM 인플루언서 커뮤니티 가입">
-    <meta property="og:description" content="데이터 기반 프리미엄 인플루언서 매칭 플랫폼">
-    <meta property="og:image" content="https://github.com/moom-bin/moom/blob/main/moom_logo.png?raw=true">
-    <meta property="og:url" content="https://moom-bin.github.io/moom/">
-    <meta property="og:type" content="website">
-
-
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    
     <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        
-        /* [수정] 배경: 단순 검정 -> 깊이감 있는 그라데이션 */
-        body { 
-            background: radial-gradient(circle at top, #1a1a1a 0%, #000000 100%); 
-            color:#fff; font-family:'Pretendard', sans-serif; text-align:center; padding:40px 20px; margin:0; line-height:1.6; 
-            min-height: 100vh;
+        :root {
+            --bg-color: #0d1117; /* 묵직한 다크 모드 배경 */
+            --text-color: #c9d1d9;
+            --main-accent: #00f2fe; /* 네온 블루 (MooM 시그니처) */
+            --sub-accent: #4facfe; /* 서브 네온 블루 */
+            --point-color: #ff00ff; /* 핫 핑크 (포인트) */
+            --disable-color: #484f58; /* 점검중 버튼 색상 */
+            --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
         }
 
-        /* [수정] 박스: 유리 질감(Glassmorphism) 및 네온 라인 강화 */
-        .form-box { 
-            background: rgba(25, 25, 25, 0.8); 
-            backdrop-filter: blur(10px);
-            padding:30px 20px; border-radius:24px; 
-            border:1px solid rgba(204, 255, 0, 0.3); 
-            max-width:450px; margin:auto; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 15px rgba(204, 255, 0, 0.05); 
-            text-align:left; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
 
-        h1 { color:#CCFF00; font-size:28px; margin-bottom:10px; text-align:center; letter-spacing:-1px; text-shadow: 0 0 10px rgba(204, 255, 0, 0.3); }
-        p.sub { color:#888; font-size:14px; margin-bottom:30px; text-align:center; }
+        /* 공통 애니메이션 클래스 */
+        .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
+        .hidden { display: none !important; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* =========================================
+           [STAGE 1] 로딩 화면 (Loading Stage) 
+        ========================================== */
+        #loading-stage { text-align: center; }
+        .loading-text { font-size: 2rem; font-weight: 800; color: var(--main-accent); letter-spacing: -1px; margin-bottom: 20px; text-transform: uppercase; }
+        .loading-bar-container { width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; position: relative; overflow: hidden; margin: 0 auto;}
+        .loading-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--sub-accent), var(--main-accent)); transition: width 0.1s linear; }
+
+        /* =========================================
+           [STAGE 2] 인트로 & 선택 화면 (Select Stage) 
+        ========================================== */
+        #select-stage { text-align: center; opacity: 0; animation: fadeIn 1s forwards; animation-delay: 0.5s; width: 90%; max-width: 1200px; }
         
-        label { display:block; font-size:13px; color:#CCFF00; font-weight:700; margin-top:20px; margin-bottom:8px; }
+        .typewriter h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(90deg, var(--main-accent), var(--point-color)); -webkit-background-clip: text; color: transparent; margin-bottom: 10px; letter-spacing: -2px;}
+        .typewriter h2 { font-size: 1.5rem; font-weight: 500; color: white; margin-bottom: 50px; }
+        .cursor { display: inline-block; width: 3px; height: 1em; background: white; animation: blink 0.7s infinite; vertical-align: middle; margin-left: 5px; }
 
-        /* [수정] 입력창: 더 어둡게 처리하여 대비 극대화 */
-        input, select, textarea { 
-            width:100%; padding:14px; box-sizing:border-box; border-radius:12px; 
-            border:1px solid #333; 
-            background:#0a0a0a; color:#fff; font-size:15px; transition:0.2s;
-        }
-        input:focus, select:focus { border-color:#CCFF00; outline:none; background:#111; box-shadow: 0 0 8px rgba(204, 255, 0, 0.2); }
+        .choice-container { display: flex; gap: 30px; justify-content: center; }
+        .choice-btn { flex: 1; max-width: 400px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 50px 30px; border-radius: 20px; text-decoration: none; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;}
         
-        .channel-group { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:5px; }
-        .checkbox-group { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+        .choice-btn h3 { font-size: 1.8rem; font-weight: 700; color: var(--main-accent); margin-bottom: 10px; }
+        .choice-btn p { font-size: 1rem; color: #8b949e; line-height: 1.5; }
+
+        .choice-btn:hover { border-color: var(--main-accent); background: rgba(0, 242, 254, 0.05); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1); }
+        .choice-btn:hover h3 { color: white; }
+        .choice-btn:hover p { color: white; }
+
+        /* 점검중 버튼 스타일 */
+        .choice-btn.disabled { cursor: not-allowed; border-color: var(--disable-color) !important; background: rgba(72, 79, 88, 0.05) !important; box-shadow: none !important; transform: none !important;}
+        .choice-btn.disabled h3 { color: var(--disable-color); }
+        .choice-btn.disabled p { color: var(--disable-color); }
+        .disabled-badge { font-size: 0.8rem; font-weight: 600; background-color: var(--disable-color); color: #000; padding: 4px 8px; border-radius: 5px; margin-bottom: 15px; }
+
+        /* =========================================
+           [STAGE 3] 인플루언서 가입 페이지 (Join Stage) 
+        ========================================== */
+        #join-stage { width: 90%; max-width: 1200px; padding: 50px 0; opacity: 0; animation: fadeIn 1s forwards;}
+        .back-btn { display: inline-block; font-size: 1rem; color: #8b949e; text-decoration: none; margin-bottom: 30px; cursor: pointer;}
+        .back-btn:hover { color: var(--main-accent); }
+
+        .split-container { display: flex; gap: 40px; align-items: flex-start; }
         
-        input[type="checkbox"] { display:none; }
-        .check-label { display:inline-block; padding:8px 18px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; background:#111; color:#888; transition:0.2s; }
-        input[type="checkbox"]:checked + .check-label { color:#000; background:#CCFF00; border-color:#CCFF00; font-weight:bold; }
+        /* 뭄에 대한 설명칸 */
+        .desc-section { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; }
+        .desc-section h1 { font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 30px; letter-spacing: -1.5px;}
+        .desc-section h1 span { background: linear-gradient(90deg, var(--main-accent), var(--sub-accent)); -webkit-background-clip: text; color: transparent;}
+        .desc-section p { font-size: 1.1rem; line-height: 1.8; color: #c9d1d9; margin-bottom: 20px; word-break: keep-all;}
+        .desc-section .point-p { color: white; font-weight: 600;}
 
-        .agree-box { margin-top:30px; padding:15px; background:rgba(255,255,255,0.03); border-radius:12px; font-size:12px; color:#777; border:1px solid #222; }
+        /* 가입 폼칸 */
+        .form-section { flex: 1.2; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px;}
+        .form-section h3 { font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: 10px; letter-spacing: -1px;}
+        .form-section p { color: #8b949e; margin-bottom: 40px; }
 
-        /* [수정] 버튼: 입체감 있는 그라데이션 및 네온 효과 */
-        .btn-submit { 
-            width:100%; padding:20px; 
-            background: linear-gradient(135deg, #CCFF00 0%, #99CC00 100%); 
-            color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; 
-            margin-top:30px; font-size:18px; 
-            box-shadow: 0 10px 25px rgba(204, 255, 0, 0.25); 
-            transition: 0.3s;
-        }
-        .btn-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(204, 255, 0, 0.4); }
-        .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; box-shadow:none; opacity: 0.6; }
+        iframe { width: 100%; height: 800px; border: none; border-radius: 10px; background-color: transparent;}
     </style>
 </head>
 <body>
 
-    <h1>MooM Partner</h1>
-    <p class="sub">데이터 기반 프리미엄 파트너십 입점 신청</p>
-
-    <div class="form-box">
-        <label>실명 (정산 및 본인 확인용)</label>
-        <input type="text" id="name" placeholder="성함을 입력하세요" required>
-
-        <label>주력 채널 정보 (해당되는 곳만 입력)</label>
-        <div class="channel-group">
-            <input type="text" id="insta_id" placeholder="인스타 ID (@제외)">
-            <input type="number" id="insta_fol" placeholder="인스타 팔로워(수)">
+    <div id="loading-stage">
+        <div class="loading-text">Loading...</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loading-bar"></div>
         </div>
-        <div class="channel-group">
-            <input type="text" id="tiktok_id" placeholder="틱톡 ID/링크">
-            <input type="number" id="tiktok_fol" placeholder="틱톡 팔로워(수)">
-        </div>
-        <div class="channel-group">
-            <input type="text" id="youtube_id" placeholder="유튜브 채널명">
-            <input type="number" id="youtube_fol" placeholder="구독자(수)">
-        </div>
+    </div>
 
-        <label>주 활동 지역</label>
-        <select id="region">
-            <option value="">지역 선택</option>
-            <option value="서울">서울</option>
-            <option value="경기/인천">경기/인천</option>
-            <option value="부산/경상">부산/경상</option>
-            <option value="대구/경북">대구/경북</option>
-            <option value="광주/전라">광주/전라</option>
-            <option value="대전/충청">대전/충청</option>
-            <option value="강원/제주">강원/제주</option>
-        </select>
-
-        <label>관심 카테고리 (중복 가능)</label>
-        <div class="checkbox-group">
-            <input type="checkbox" id="cat1" name="category" value="뷰티"><label for="cat1" class="check-label">뷰티</label>
-            <input type="checkbox" id="cat2" name="category" value="패션"><label for="cat2" class="check-label">패션</label>
-            <input type="checkbox" id="cat3" name="category" value="라이프스타일"><label for="cat3" class="check-label">라이프스타일</label>
-            <input type="checkbox" id="cat4" name="category" value="맛집/카페"><label for="cat4" class="check-label">맛집/카페</label>
-            <input type="checkbox" id="cat5" name="category" value="육아"><label for="cat5" class="check-label">육아</label>
+    <div id="select-stage" class="hidden">
+        <div class="typewriter">
+            <h1>Make your Influence MAX</h1>
+            <h2>Made out of Max, 우리는 MooM입니다.<span class="cursor"></span></h2>
         </div>
-
-        <div class="agree-box">
-            [활동 규정 및 개인정보 동의]<br>
-            - 허위 데이터 제출 시 파트너 자격이 박탈됩니다.<br>
-            - 광고주와의 직거래는 엄격히 금지됩니다.<br>
-            - 수집된 정보는 협찬 매칭 용도로만 활용됩니다.
+        
+        <div class="choice-container">
+            <a class="choice-btn disabled" href="#">
+                <span class="disabled-badge">Currently Offline</span>
+                <h3>광고주이신가요?</h3>
+                <p>브랜드의 가치를 데이터로 증명할 수 있는 고효율 캠페인을 준비 중입니다.</p>
+            </a>
+            
+            <a class="choice-btn fade-in" id="to-influencer" href="#">
+                <h3>인플루언서이신가요?</h3>
+                <p>소속 계약 없이, 원하는 기회만 선택해서 영향력을 MAX로 키워보세요.</p>
+            </a>
         </div>
-        <div style="margin-top:15px; text-align:center;">
-            <input type="checkbox" id="agree" style="display:inline-block; width:auto; margin-right:8px;">
-            <label for="agree" style="display:inline-block; color:#fff; font-size:13px;">위 내용을 확인했으며 동의합니다.</label>
-        </div>
+    </div>
 
-        <button class="btn-submit" id="submitBtn" onclick="submitForm()" disabled>MooM 파트너 신청하기</button>
+    <div id="join-stage" class="hidden">
+        <a class="back-btn" id="back-to-select" href="#">&larr; 돌아가기</a>
+        
+        <div class="split-container">
+            <div class="desc-section">
+                <h1>영향력을 <span>MAX</span>로<br>키우는 가장 현명한 방법</h1>
+                <p>MooM은 단순한 협찬방이 아닙니다. 파트너 한 분 한 분이 인플루언서로서 더 크게 빛날 수 있도록 돕는 성장 서포트 커뮤니티입니다.</p>
+                <p class="point-p">✨ 소속되어 제한 있는 건 절대 없습니다!</p>
+                <p>MooM 톡방에 협찬/공구가 올라오면, 관심 있으신 건에 대해서만 자유롭게 요청하세요. 원하지 않는 건은 부담 없이 넘기시면 됩니다.</p>
+                <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. 부담 없이 즐겁게 성장해 보세요!</p>
+            </div>
+            
+            <div class="form-section">
+                <h3>무료 가입 신청</h3>
+                <p>데이터 기반 고효율 캠페인을 만나보세요.</p>
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7mRsh2_b69iYm_vK8Hw62P52Xq6L4g_8W_N0O-69G2rU1Ww/viewform?embedded=true">Loading...</iframe>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 동의 체크박스 상태에 따라 버튼 활성화
-        document.getElementById('agree').addEventListener('change', function(e) {
-            document.getElementById('submitBtn').disabled = !e.target.checked;
-        });
-
-        function submitForm() {
-            const categories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value);
-            
-            const data = {
-                name: document.getElementById('name').value,
-                insta_id: document.getElementById('insta_id').value,
-                insta_fol: document.getElementById('insta_fol').value,
-                tiktok_id: document.getElementById('tiktok_id').value,
-                tiktok_fol: document.getElementById('tiktok_fol').value,
-                youtube_id: document.getElementById('youtube_id').value,
-                youtube_fol: document.getElementById('youtube_fol').value,
-                region: document.getElementById('region').value,
-                category: categories.join(', ')
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingBar = document.getElementById('loading-bar');
+            const stages = {
+                loading: document.getElementById('loading-stage'),
+                select: document.getElementById('select-stage'),
+                join: document.getElementById('join-stage')
             };
+            const toInfluencerBtn = document.getElementById('to-influencer');
+            const backToSelectBtn = document.getElementById('back-to-select');
 
-            if(!data.name) { alert("성함을 입력해주세요."); return; }
-            
-            document.getElementById('submitBtn').innerText = "처리 중...";
-            document.getElementById('submitBtn').disabled = true;
+            // 1. 로딩 애니메이션 (3초)
+            let width = 0;
+            const loadingInterval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loadingInterval);
+                    // 로딩 완료 후 화면 전환
+                    stages.loading.classList.add('hidden');
+                    stages.select.classList.remove('hidden');
+                } else {
+                    width += 3.33; // 3초 동안 100% 채우기
+                    loadingBar.style.width = width + '%';
+                }
+            }, 100);
 
-            fetch('https://script.google.com/macros/s/AKfycby56JgtyEMemRVzC8QfE2iqu3cWx8YRXzTCLEynYinN95RSejd1dhNpXOdClQTG8KX0/exec', {
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then(res => res.json())
-            .then(res => {
-                sessionStorage.setItem('moom_partner_code', res.id);
-                location.href = 'complete.html';
-            })
-            .catch(err => {
-                alert("오류가 발생했습니다. 다시 시도해주세요.");
-                document.getElementById('submitBtn').innerText = "신청하기";
-                document.getElementById('submitBtn').disabled = false;
+            // 2. 화면 전환 함수
+            function showStage(stageToShow) {
+                Object.values(stages).forEach(stage => stage.classList.add('hidden'));
+                stageToShow.classList.remove('hidden');
+                // 페이지 이동 시 최상단으로 스크롤
+                window.scrollTo(0, 0);
+            }
+
+            // 3. 버튼 이벤트 연결
+            toInfluencerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showStage(stages.join);
             });
-        }
+
+            backToSelectBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showStage(stages.select);
+            });
+        });
     </script>
 </body>
 </html>
