@@ -4,158 +4,213 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MooM : Made out of Max</title>
+    
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-color: #030303; /* 더 깊은 블랙 배경 */
             --main-accent: #00f2fe;
+            --sub-accent: #4facfe;
             --point-color: #ff00ff;
+            --disable-color: #484f58;
             --font-family: 'Pretendard', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-family); background-color: var(--bg-color); color: white; overflow: hidden; display: flex; align-items: center; justify-content: center; height: 100vh; width: 100vw; }
+        body { font-family: var(--font-family); background-color: var(--bg-color); color: white; overflow-x: hidden; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
 
+        .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
         .hidden { display: none !important; }
 
-        /* [STAGE 1] 캐릭터 로딩 & 메시지 */
-        #loading-stage { text-align: center; width: 100%; }
-        .character-box { width: 120px; height: 120px; margin: 0 auto 20px; position: relative; }
-        
-        /* 캐릭터 이미지 (리더님이 나중에 이미지로 교체 가능) */
-        .character { 
-            width: 100%; height: 100%; background: var(--main-accent); border-radius: 30%; 
-            display: flex; align-items: center; justify-content: center; font-size: 3rem;
-            animation: bounce 1.5s infinite ease-in-out;
-        }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        .speech-bubble {
-            background: white; color: black; padding: 15px 25px; border-radius: 20px;
-            font-weight: 700; position: relative; display: inline-block;
-            margin-bottom: 30px; min-width: 250px;
-        }
-        .speech-bubble::after {
-            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
-            border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid white;
-        }
-
-        .loading-bar-container { width: 200px; height: 4px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; border-radius: 10px; }
-        .loading-bar { width: 0%; height: 100%; background: var(--main-accent); transition: width 0.1s linear; }
-
-        /* [STAGE 2] 메인 선택 화면 */
-        #select-stage { text-align: center; animation: fadeIn 1s forwards; width: 90%; max-width: 1000px;}
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        /* 외계인 바운스 애니메이션 */
+        @keyframes alien-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .intro-text { margin-bottom: 50px; }
-        .intro-text h1 { font-size: 3rem; margin-bottom: 10px; background: linear-gradient(90deg, #fff, var(--main-accent)); -webkit-background-clip: text; color: transparent; }
-
-        .btn-container { display: flex; gap: 20px; justify-content: center; }
-        .btn { 
-            flex: 1; padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.02); cursor: pointer; transition: 0.3s; text-decoration: none; color: white;
+        /* =========================================
+           [STAGE 1] 로딩 화면 (Alien Loading)
+        ========================================== */
+        #loading-stage { text-align: center; }
+        
+        /* 로딩 말풍선 */
+        .loading-bubble {
+            background: white; color: black; padding: 12px 20px; border-radius: 15px;
+            font-weight: 700; font-size: 1rem; position: relative; display: inline-block;
+            margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255,255,255,0.1);
         }
-        .btn:hover { border-color: var(--main-accent); background: rgba(0, 242, 254, 0.05); transform: translateY(-10px); }
-        .btn h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .btn.disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn.disabled:hover { transform: none; border-color: rgba(255,255,255,0.1); }
+        .loading-bubble::after {
+            content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid white;
+        }
 
-        /* [STAGE 3] 인플루언서 폼 & 설명 */
-        #join-stage { width: 95%; height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding: 20px;}
-        .join-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; height: 100%; }
-        .info-card { background: rgba(255,255,255,0.03); padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.05); }
-        .info-card h2 { font-size: 2rem; color: var(--main-accent); margin-bottom: 20px; }
-        .info-card p { line-height: 1.8; color: #ccc; margin-bottom: 15px; }
-        .form-card { background: white; border-radius: 25px; overflow: hidden; height: 100%; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .back-link { color: #888; text-decoration: none; margin-bottom: 10px; display: inline-block; }
+        /* 로딩 외계인 이미지 */
+        .loading-alien {
+            width: 100px; height: auto; margin-bottom: 25px;
+            animation: alien-bounce 1.5s infinite ease-in-out;
+        }
+
+        .loading-bar-container { width: 250px; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; border-radius: 10px; }
+        .loading-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--sub-accent), var(--main-accent)); transition: width 0.1s linear; }
+
+        /* =========================================
+           [STAGE 2] 인트로 & 선택 화면 (Select Stage)
+        ========================================== */
+        #select-stage { text-align: center; width: 95%; max-width: 1100px; padding: 30px 0; }
+
+        /* 메인화면 외계인 */
+        .main-alien {
+            width: 120px; height: auto; margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(0,242,254,0.3)); /* 네온 그림자 */
+        }
+
+        .intro-text h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--main-accent), var(--point-color)); -webkit-background-clip: text; color: transparent; margin-bottom: 5px; letter-spacing: -2px;}
+        .intro-text h2 { font-size: 1.4rem; font-weight: 500; color: #ccc; margin-bottom: 40px; letter-spacing: -0.5px; }
+
+        .choice-container { display: flex; gap: 20px; justify-content: center; }
+        .choice-btn { 
+            flex: 1; max-width: 380px; padding: 40px 30px; border-radius: 20px; 
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);
+            text-decoration: none; cursor: pointer; transition: 0.3s ease; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        
+        .choice-btn h3 { font-size: 1.6rem; font-weight: 700; color: white; margin-bottom: 8px; }
+        .choice-btn p { font-size: 0.95rem; color: #8b949e; line-height: 1.6; word-break: keep-all;}
+
+        .choice-btn:hover { border-color: var(--main-accent); background: rgba(0, 242, 254, 0.04); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 242, 254, 0.08); }
+        .choice-btn:hover h3 { color: var(--main-accent); }
+        .choice-btn:hover p { color: white; }
+
+        /* 점검중 버튼 */
+        .choice-btn.disabled { cursor: not-allowed; opacity: 0.4; border-color: transparent !important; background: rgba(72, 79, 88, 0.02) !important; box-shadow: none !important; transform: none !important;}
+        .disabled-tag { font-size: 0.75rem; font-weight: 600; color: var(--point-color); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
+
+        /* =========================================
+           [STAGE 3] 인플루언서 가입 페이지
+        ========================================== */
+        #join-stage { width: 95%; max-width: 1100px; padding: 30px 0; animation: fadeIn 1s forwards; overflow-y: auto; height: 95vh;}
+        .back-link { color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block; font-size: 0.9rem;}
+        .back-link:hover { color: var(--main-accent); }
+
+        .split-container { display: flex; gap: 20px; align-items: stretch; }
+        
+        .desc-section { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center;}
+        .desc-section h1 { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 20px; letter-spacing: -1.5px;}
+        .desc-section h1 span { color: var(--main-accent); }
+        .desc-section p { font-size: 1rem; line-height: 1.8; color: #c9d1d9; margin-bottom: 15px; word-break: keep-all;}
+        .point-p { background: linear-gradient(90deg, #fff, var(--main-accent)); -webkit-background-clip: text; color: transparent; font-weight: 700;}
+
+        .form-section { flex: 1.4; background: white; border-radius: 20px; overflow: hidden; height: 800px;}
+        iframe { width: 100%; height: 100%; border: none; background: white;}
     </style>
 </head>
 <body>
 
     <div id="loading-stage">
-        <div class="speech-bubble" id="loading-msg">MooM에 오신 걸 환영합니다!</div>
-        <div class="character-box">
-            <div class="character">✨</div>
-        </div>
+        <div class="loading-bubble" id="loading-msg">데이터를 불러오는 중...</div>
+        <br>
+        <img src="https://i.ibb.co/3sX8498/alien.png" alt="MooM Mascot Alien" class="loading-alien">
         <div class="loading-bar-container">
             <div class="loading-bar" id="loading-bar"></div>
         </div>
     </div>
 
     <div id="select-stage" class="hidden">
+        <img src="https://i.ibb.co/3sX8498/alien.png" alt="MooM Mascot Alien" class="main-alien">
         <div class="intro-text">
-            <h1>Made out of Max</h1>
-            <p>파트너님의 영향력을 최대치로 끌어올리는 시간</p>
+            <h1>Make your Influence MAX</h1>
+            <h2>Made out of Max, 우리는 뭄(MooM)입니다.</h2>
         </div>
-        <div class="btn-container">
-            <div class="btn disabled">
-                <p style="font-size: 0.8rem; color: #ff00ff; margin-bottom: 10px;">[현재 점검 중]</p>
+        
+        <div class="choice-container">
+            <a class="choice-btn disabled" href="#">
+                <span class="disabled-tag">[점검 중]</span>
                 <h3>광고주이신가요?</h3>
-                <p>브랜딩 가치를 높이는 고효율 캠페인을 준비 중입니다.</p>
-            </div>
-            <div class="btn" id="go-influencer">
+                <p>데이터 기반 고효율 캠페인을 통해 브랜드 가치를 MAX로 증명합니다.</p>
+            </a>
+            
+            <a class="choice-btn fade-in" id="to-influencer" href="#">
                 <h3>인플루언서이신가요?</h3>
-                <p>소속 제한 없이 원하는 기회만 선택해서 참여하세요.</p>
-            </div>
+                <p>소속 계약 없이, 원하는 기회만 선택해서 영향력을 MAX로 키워보세요.</p>
+            </a>
         </div>
     </div>
 
     <div id="join-stage" class="hidden">
-        <a href="#" class="back-link" id="go-back">← 처음으로</a>
-        <div class="join-layout">
-            <div class="info-card">
-                <h2>Why MooM?</h2>
-                <p><strong>✓ 소속이나 제한이 절대 없습니다.</strong><br>톡방에 올라오는 공고 중 관심 있는 건만 골라서 답장 주세요.</p>
-                <p><strong>✓ 성장을 위한 데이터 증명</strong><br>여러분의 영향력이 헛되지 않게 확실한 기회를 연결합니다.</p>
-                <p><strong>✓ 다양한 카테고리</strong><br>의류, 뷰티, 숙소, 식당, 페스티벌까지 무궁무진한 기회가 있습니다.</p>
-                <p style="margin-top: 30px; font-size: 0.9rem; color: var(--main-accent);">"지금 바로 파트너로 등록하고 첫 기회를 잡으세요!"</p>
+        <a class="back-link" id="back-to-select" href="#">&larr; 돌아가기</a>
+        <div class="split-container">
+            <div class="desc-section">
+                <h1>영향력을 <span>MAX</span>로<br>키우는 현명한 방법</h1>
+                <p>뭄(MooM)은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 액셀러레이팅 커뮤니티입니다.</p>
+                <p class="point-p">✨ 소속되어 제한 있는 건 절대 없습니다!</p>
+                <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요. 원하지 않는 건은 부담 없이 넘기시면 됩니다.</p>
+                <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. 즐겁게 성장해 보세요!</p>
             </div>
-            <div class="form-card">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7mRsh2_b69iYm_vK8Hw62P52Xq6L4g_8W_N0O-69G2rU1Ww/viewform?embedded=true"></iframe>
+            <div class="form-section">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7mRsh2_b69iYm_vK8Hw62P52Xq6L4g_8W_N0O-69G2rU1Ww/viewform?embedded=true">Loading...</iframe>
             </div>
         </div>
     </div>
 
     <script>
-        const messages = [
-            "데이터를 분석하는 중...",
-            "최고의 기회를 찾는 중...",
-            "거의 다 왔어요! 잠시만요!",
-            "안녕하세요? 뭄(MooM)입니다!"
-        ];
-        
-        const loadingBar = document.getElementById('loading-bar');
-        const loadingMsg = document.getElementById('loading-msg');
-        
-        let width = 0;
-        let msgIndex = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingBar = document.getElementById('loading-bar');
+            const loadingMsg = document.getElementById('loading-msg');
+            const stages = {
+                loading: document.getElementById('loading-stage'),
+                select: document.getElementById('select-stage'),
+                join: document.getElementById('join-stage')
+            };
+            const toInfluencerBtn = document.getElementById('to-influencer');
+            const backToSelectBtn = document.getElementById('back-to-select');
 
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                document.getElementById('loading-stage').classList.add('hidden');
-                document.getElementById('select-stage').classList.remove('hidden');
-            } else {
-                width += 1;
-                loadingBar.style.width = width + '%';
-                
-                // 로딩 퍼센트에 따라 메시지 변경
-                if (width % 25 === 0 && msgIndex < messages.length) {
-                    loadingMsg.innerText = messages[msgIndex];
-                    msgIndex++;
+            // 로딩 메시지 리스트
+            const loadingMessages = [
+                "최고의 기회를 찾는 중...",
+                "데이터를 분석하는 중...",
+                "인플루언서들을 매칭 중...",
+                "MooM 월드에 접속 중...",
+                "안녕하세요? 우리는 뭄(MooM)입니다!"
+            ];
+
+            // 1. 로딩 애니메이션 (3초)
+            let width = 0;
+            const loadingInterval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loadingInterval);
+                    // 로딩 완료 후 메인화면으로 전환
+                    stages.loading.classList.add('hidden');
+                    stages.select.classList.remove('hidden');
+                } else {
+                    width += 1; // 3초 동안 100% 채우기 (1초에 약 33%)
+                    loadingBar.style.width = width + '%';
+                    
+                    // 로딩 퍼센트에 따라 메시지 변경 (20%마다)
+                    if (width % 20 === 0 && (width / 20) < loadingMessages.length) {
+                        loadingMsg.innerText = loadingMessages[width / 20];
+                    }
                 }
+            }, 30); // 3초 / 100 = 30ms
+
+            // 2. 화면 전환 함수
+            function showStage(stageToShow) {
+                Object.values(stages).forEach(stage => stage.classList.add('hidden'));
+                stageToShow.classList.remove('hidden');
+                // 페이지 이동 시 최상단으로 스크롤
+                window.scrollTo(0, 0);
             }
-        }, 30);
 
-        document.getElementById('go-influencer').addEventListener('click', () => {
-            document.getElementById('select-stage').classList.add('hidden');
-            document.getElementById('join-stage').classList.remove('hidden');
-        });
+            // 3. 버튼 이벤트 연결
+            toInfluencerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showStage(stages.join);
+            });
 
-        document.getElementById('go-back').addEventListener('click', () => {
-            document.getElementById('join-stage').classList.add('hidden');
-            document.getElementById('select-stage').classList.remove('hidden');
+            backToSelectBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showStage(stages.select);
+            });
         });
     </script>
 </body>
