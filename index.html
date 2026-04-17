@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            --bg-color: #030303; /* 더 깊은 블랙 배경 */
+            --bg-color: #030303; 
             --main-accent: #00f2fe;
             --sub-accent: #4facfe;
             --point-color: #ff00ff;
@@ -24,113 +24,84 @@
         .hidden { display: none !important; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        /* 외계인 바운스 애니메이션 */
-        @keyframes alien-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* =========================================
-           [STAGE 1] 로딩 화면 (Alien Loading)
-        ========================================== */
-        #loading-stage { text-align: center; }
-        
-        /* 로딩 말풍선 */
-        .loading-bubble {
-            background: white; color: black; padding: 12px 20px; border-radius: 15px;
-            font-weight: 700; font-size: 1rem; position: relative; display: inline-block;
-            margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255,255,255,0.1);
-        }
-        .loading-bubble::after {
-            content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-            border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid white;
-        }
-
-        /* 로딩 외계인 이미지 */
-        .loading-alien {
-            width: 100px; height: auto; margin-bottom: 25px;
-            animation: alien-bounce 1.5s infinite ease-in-out;
-        }
-
-        .loading-bar-container { width: 250px; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; border-radius: 10px; }
+        /* [STAGE 1] 로딩 */
+        #loading-stage { text-align: center; width: 100%; }
+        .loading-text { font-size: 2rem; font-weight: 800; color: var(--main-accent); letter-spacing: -1px; margin-bottom: 20px; text-transform: uppercase; }
+        .loading-logo { width: 160px; height: auto; margin-bottom: 25px; border-radius: 20px; box-shadow: 0 0 20px rgba(0, 242, 254, 0.2); }
+        .loading-bar-container { width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin: 0 auto;}
         .loading-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--sub-accent), var(--main-accent)); transition: width 0.1s linear; }
 
-        /* =========================================
-           [STAGE 2] 인트로 & 선택 화면 (Select Stage)
-        ========================================== */
+        /* [STAGE 2] 선택 */
         #select-stage { text-align: center; width: 95%; max-width: 1100px; padding: 30px 0; }
+        .main-logo { width: 150px; height: auto; margin-bottom: 20px; border-radius: 20px; filter: drop-shadow(0 0 15px rgba(0,242,254,0.4)); animation: bounce 2s infinite ease-in-out; }
+        .intro-text h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--main-accent), var(--point-color)); -webkit-background-clip: text; color: transparent; margin-bottom: 10px; letter-spacing: -2px;}
+        .intro-text h2 { font-size: 1.4rem; font-weight: 500; color: #ccc; margin-bottom: 50px; letter-spacing: -0.5px; }
 
-        /* 메인화면 외계인 */
-        .main-alien {
-            width: 120px; height: auto; margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(0,242,254,0.3)); /* 네온 그림자 */
-        }
-
-        .intro-text h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--main-accent), var(--point-color)); -webkit-background-clip: text; color: transparent; margin-bottom: 5px; letter-spacing: -2px;}
-        .intro-text h2 { font-size: 1.4rem; font-weight: 500; color: #ccc; margin-bottom: 40px; letter-spacing: -0.5px; }
-
-        .choice-container { display: flex; gap: 20px; justify-content: center; }
-        .choice-btn { 
-            flex: 1; max-width: 380px; padding: 40px 30px; border-radius: 20px; 
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);
-            text-decoration: none; cursor: pointer; transition: 0.3s ease; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        
-        .choice-btn h3 { font-size: 1.6rem; font-weight: 700; color: white; margin-bottom: 8px; }
-        .choice-btn p { font-size: 0.95rem; color: #8b949e; line-height: 1.6; word-break: keep-all;}
-
-        .choice-btn:hover { border-color: var(--main-accent); background: rgba(0, 242, 254, 0.04); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 242, 254, 0.08); }
+        .choice-container { display: flex; gap: 25px; justify-content: center; }
+        .choice-btn { flex: 1; max-width: 400px; padding: 50px 30px; border-radius: 25px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); text-decoration: none; cursor: pointer; transition: 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .choice-btn h3 { font-size: 1.8rem; font-weight: 700; color: white; margin-bottom: 10px; }
+        .choice-btn p { font-size: 1rem; color: #8b949e; line-height: 1.6; word-break: keep-all;}
+        .choice-btn:hover { border-color: var(--main-accent); background: rgba(0, 242, 254, 0.05); transform: translateY(-8px); box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1); }
         .choice-btn:hover h3 { color: var(--main-accent); }
-        .choice-btn:hover p { color: white; }
+        .choice-btn.disabled { cursor: not-allowed; opacity: 0.4; border-color: transparent !important; background: rgba(72, 79, 88, 0.05) !important; }
+        .disabled-tag { font-size: 0.75rem; font-weight: 600; color: var(--point-color); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
 
-        /* 점검중 버튼 */
-        .choice-btn.disabled { cursor: not-allowed; opacity: 0.4; border-color: transparent !important; background: rgba(72, 79, 88, 0.02) !important; box-shadow: none !important; transform: none !important;}
-        .disabled-tag { font-size: 0.75rem; font-weight: 600; color: var(--point-color); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
-
-        /* =========================================
-           [STAGE 3] 인플루언서 가입 페이지
-        ========================================== */
+        /* [STAGE 3] 가입 페이지 (문구 100% 보존) */
         #join-stage { width: 95%; max-width: 1100px; padding: 30px 0; animation: fadeIn 1s forwards; overflow-y: auto; height: 95vh;}
-        .back-link { color: #888; text-decoration: none; margin-bottom: 20px; display: inline-block; font-size: 0.9rem;}
+        .back-link { color: #888; text-decoration: none; margin-bottom: 25px; display: inline-block; font-size: 1rem;}
         .back-link:hover { color: var(--main-accent); }
-
-        .split-container { display: flex; gap: 20px; align-items: stretch; }
+        .split-container { display: flex; gap: 30px; align-items: stretch; }
         
-        .desc-section { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; display: flex; flex-direction: column; justify-content: center;}
-        .desc-section h1 { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 20px; letter-spacing: -1.5px;}
+        .desc-section { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 25px; display: flex; flex-direction: column; justify-content: center;}
+        .desc-section h1 { font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 25px; letter-spacing: -1.5px;}
         .desc-section h1 span { color: var(--main-accent); }
-        .desc-section p { font-size: 1rem; line-height: 1.8; color: #c9d1d9; margin-bottom: 15px; word-break: keep-all;}
+        .desc-section p { font-size: 1.1rem; line-height: 1.8; color: #c9d1d9; margin-bottom: 20px; word-break: keep-all;}
         .point-p { background: linear-gradient(90deg, #fff, var(--main-accent)); -webkit-background-clip: text; color: transparent; font-weight: 700;}
 
-        .form-section { flex: 1.4; background: white; border-radius: 20px; overflow: hidden; height: 800px;}
-        iframe { width: 100%; height: 100%; border: none; background: white;}
+        /* 💡 신청서 박스 (커스텀 디자인) */
+        .form-box { flex: 1.4; background:#111; padding:35px; border-radius:25px; border:1px solid var(--main-accent); text-align:left; }
+        label { display:block; font-size:13px; color:var(--main-accent); font-weight:700; margin-top:18px; margin-bottom:8px; }
+        input, select { width:100%; padding:14px; border-radius:12px; border:1px solid #222; background:#1a1a1a; color:#fff; font-size:15px; }
+        input:focus { border-color:var(--main-accent); outline:none; }
+        .channel-group { display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:5px; }
+        .checkbox-group { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+        .check-label { display:inline-block; padding:8px 15px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; background:#1a1a1a; color:#888; transition:0.2s; }
+        input[type="checkbox"] { display: none; }
+        input[type="checkbox"]:checked + .check-label { color:#000; background:var(--main-accent); font-weight: 700; }
+        .btn-submit { width:100%; padding:20px; background:var(--main-accent); color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; font-size:18px; }
+        .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; }
+#join-stage {
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+}
+#join-stage::-webkit-scrollbar {
+    display: none; /* 크롬, 사파리, 오페라 등 */
+}
     </style>
 </head>
 <body>
 
     <div id="loading-stage">
-        <div class="loading-bubble" id="loading-msg">데이터를 불러오는 중...</div>
-        <br>
-        <img src="https://i.ibb.co/3sX8498/alien.png" alt="MooM Mascot Alien" class="loading-alien">
-        <div class="loading-bar-container">
-            <div class="loading-bar" id="loading-bar"></div>
-        </div>
+        <div class="loading-text">Loading...</div>
+        <img src="logo.jpg" alt="MooM Logo" class="loading-logo">
+        <div class="loading-bar-container"><div class="loading-bar" id="loading-bar"></div></div>
     </div>
 
     <div id="select-stage" class="hidden">
-        <img src="https://i.ibb.co/3sX8498/alien.png" alt="MooM Mascot Alien" class="main-alien">
+        <img src="logo.jpg" alt="MooM Logo" class="main-logo">
         <div class="intro-text">
-            <h1>Make your Influence MAX</h1>
-            <h2>Made out of Max, 우리는 뭄(MooM)입니다.</h2>
+            <h1>Make out of MAX</h1>
+            <h2>파트너님의 영향력을 최대치로 만드는 공간 뭄(MooM)입니다.</h2>
         </div>
-        
         <div class="choice-container">
-            <a class="choice-btn disabled" href="#">
+            <a class="choice-btn disabled">
                 <span class="disabled-tag">[점검 중]</span>
                 <h3>광고주이신가요?</h3>
                 <p>데이터 기반 고효율 캠페인을 통해 브랜드 가치를 MAX로 증명합니다.</p>
             </a>
-            
-            <a class="choice-btn fade-in" id="to-influencer" href="#">
+            <a class="choice-btn fade-in" id="to-influencer">
                 <h3>인플루언서이신가요?</h3>
                 <p>소속 계약 없이, 원하는 기회만 선택해서 영향력을 MAX로 키워보세요.</p>
             </a>
@@ -142,76 +113,157 @@
         <div class="split-container">
             <div class="desc-section">
                 <h1>영향력을 <span>MAX</span>로<br>키우는 현명한 방법</h1>
-                <p>뭄(MooM)은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 액셀러레이팅 커뮤니티입니다.</p>
-                <p class="point-p">✨ 소속되어 제한 있는 건 절대 없습니다!</p>
+                <p><span>뭄(MooM)</span>은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 인플루언서 커뮤니티입니다.</p>
+                <p class="point-p">✨ 소속 제한 절대 없습니다!</p>
                 <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요. 원하지 않는 건은 부담 없이 넘기시면 됩니다.</p>
-                <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. 즐겁게 성장해 보세요!</p>
+                <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. <span>MooM</span>과 함께 성장해 보세요!</p>
             </div>
-            <div class="form-section">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7mRsh2_b69iYm_vK8Hw62P52Xq6L4g_8W_N0O-69G2rU1Ww/viewform?embedded=true">Loading...</iframe>
-            </div>
-        </div>
+
+            <div class="form-box">
+    <h3 style="color: #fff; font-size: 22px; margin-bottom: 5px; font-weight: 800;">무료 가입 신청</h3>
+    <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Made out of Max, 당신의 가치를 증명하세요.</p>
+
+    <label>활동명</label>
+    <input type="text" id="name" placeholder="활동명을 입력하세요">
+
+    <label>인스타그램</label>
+    <div class="channel-group">
+        <input type="text" id="insta_id" placeholder="ID (@제외)">
+        <input type="number" id="insta_fol" placeholder="팔로워 수">
     </div>
+
+    <label>틱톡</label>
+    <div class="channel-group">
+        <input type="text" id="tiktok_id" placeholder="ID/링크">
+        <input type="number" id="tiktok_fol" placeholder="팔로워 수">
+    </div>
+
+    <label>블로그</label>
+    <div class="channel-group">
+        <input type="text" id="blog_id" placeholder="블로그 주소/ID">
+        <input type="number" id="blog_vis" placeholder="일평균 방문자">
+    </div>
+
+    <label>유튜브</label>
+    <div class="channel-group">
+        <input type="text" id="youtube_id" placeholder="채널명">
+        <input type="number" id="youtube_fol" placeholder="구독자 수">
+    </div>
+
+    <label>주 활동 지역</label>
+    <select id="region">
+        <option value="서울">서울</option>
+        <option value="경기/인천">경기/인천</option>
+        <option value="대전">대전</option>
+        <option value="대구">대구</option>
+        <option value="부산">부산</option>
+        <option value="기기타">기타 지역</option>
+    </select>
+
+    <label>관심 카테고리 (중복 선택)</label>
+    <div class="checkbox-group">
+        <input type="checkbox" id="cat1" name="category" value="뷰티"><label for="cat1" class="check-label">뷰티</label>
+        <input type="checkbox" id="cat2" name="category" value="패션"><label for="cat2" class="check-label">패션</label>
+        <input type="checkbox" id="cat3" name="category" value="맛집"><label for="cat3" class="check-label">맛집/카페</label>
+        <input type="checkbox" id="cat4" name="category" value="헬스"><label for="cat4" class="check-label">헬스</label>
+        <input type="checkbox" id="cat5" name="category" value="여행"><label for="cat5" class="check-label">여행</label>
+        <input type="checkbox" id="cat6" name="category" value="시술"><label for="cat6" class="check-label">시술</label>
+        <input type="checkbox" id="cat7" name="category" value="공구"><label for="cat7" class="check-label">공구</label>
+    </div>
+
+<div class="agree-box" style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; line-height: 1.6;">
+    <strong>[개인정보 수집 및 활동 규정]</strong><br>
+    1. <strong>수집항목:</strong> 성명, SNS 계정정보(ID/팔로워수), 활동지역, 관심카테고리<br>
+    2. <strong>이용목적:</strong> MooM 캠페인 매칭, 파트너 관리 및 본인 확인<br>
+    3. <strong>제3자 제공:</strong> 캠페인 선정을 위해 광고주(브랜드사)에게 파트너 정보가 제공될 수 있습니다.<br>
+    4. <strong>보유기간:</strong> 파트너 탈퇴 요청 시 혹은 목적 달성 시까지 (최대 1년 보관)<br>
+    5. <strong>활동규정:</strong> 허위 데이터 제출 및 광고주 직거래 적발 시 자격 박탈 및 민형사상 책임을 물을 수 있습니다.
+</div>
+    
+    <div style="margin-top:20px; text-align:left; display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="agree_rules" class="agree-check" style="width: 18px; height: 18px; cursor: pointer; display: block !important;">
+        <label for="agree_rules" style="font-size:13px; cursor:pointer; color:#fff; margin:0;">활동 규정을 확인했으며 동의합니다. (필수)</label>
+    </div>
+
+    <div style="margin-top:10px; text-align:left; display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="agree_privacy" class="agree-check" style="width: 18px; height: 18px; cursor: pointer; display: block !important;">
+        <label for="agree_privacy" style="font-size:13px; cursor:pointer; color:#fff; margin:0;">개인정보 수집 및 이용에 동의합니다. (필수)</label>
+    </div>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitForm()" disabled>신청하기</button>
+</div>
+
+<script>
+    // 💡 두 개의 체크박스가 모두 체크되어야 버튼 활성화
+    const checks = document.querySelectorAll('.agree-check');
+    const submitBtn = document.getElementById('submitBtn');
+
+    checks.forEach(check => {
+        check.addEventListener('change', () => {
+            const allChecked = Array.from(checks).every(c => c.checked);
+            submitBtn.disabled = !allChecked;
+        });
+    });
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loadingBar = document.getElementById('loading-bar');
-            const loadingMsg = document.getElementById('loading-msg');
-            const stages = {
-                loading: document.getElementById('loading-stage'),
-                select: document.getElementById('select-stage'),
-                join: document.getElementById('join-stage')
-            };
-            const toInfluencerBtn = document.getElementById('to-influencer');
-            const backToSelectBtn = document.getElementById('back-to-select');
-
-            // 로딩 메시지 리스트
-            const loadingMessages = [
-                "최고의 기회를 찾는 중...",
-                "데이터를 분석하는 중...",
-                "인플루언서들을 매칭 중...",
-                "MooM 월드에 접속 중...",
-                "안녕하세요? 우리는 뭄(MooM)입니다!"
-            ];
-
-            // 1. 로딩 애니메이션 (3초)
+            const stages = { loading: document.getElementById('loading-stage'), select: document.getElementById('select-stage'), join: document.getElementById('join-stage') };
             let width = 0;
             const loadingInterval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(loadingInterval);
-                    // 로딩 완료 후 메인화면으로 전환
-                    stages.loading.classList.add('hidden');
-                    stages.select.classList.remove('hidden');
-                } else {
-                    width += 1; // 3초 동안 100% 채우기 (1초에 약 33%)
-                    loadingBar.style.width = width + '%';
-                    
-                    // 로딩 퍼센트에 따라 메시지 변경 (20%마다)
-                    if (width % 20 === 0 && (width / 20) < loadingMessages.length) {
-                        loadingMsg.innerText = loadingMessages[width / 20];
-                    }
-                }
-            }, 30); // 3초 / 100 = 30ms
-
-            // 2. 화면 전환 함수
-            function showStage(stageToShow) {
-                Object.values(stages).forEach(stage => stage.classList.add('hidden'));
-                stageToShow.classList.remove('hidden');
-                // 페이지 이동 시 최상단으로 스크롤
-                window.scrollTo(0, 0);
-            }
-
-            // 3. 버튼 이벤트 연결
-            toInfluencerBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                showStage(stages.join);
-            });
-
-            backToSelectBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                showStage(stages.select);
-            });
+                if (width >= 100) { clearInterval(loadingInterval); stages.loading.classList.add('hidden'); stages.select.classList.remove('hidden'); }
+                else { width += 1.5; loadingBar.style.width = Math.min(width, 100) + '%'; }
+            }, 30);
+            function showStage(stageToShow) { Object.values(stages).forEach(stage => stage.classList.add('hidden')); stageToShow.classList.remove('hidden'); window.scrollTo(0, 0); }
+            document.getElementById('to-influencer').onclick = (e) => { e.preventDefault(); showStage(stages.join); };
+            document.getElementById('back-to-select').onclick = (e) => { e.preventDefault(); showStage(stages.select); };
+            document.getElementById('agree').onchange = (e) => { document.getElementById('submitBtn').disabled = !e.target.checked; };
         });
+
+        function submitForm() {
+            const name = document.getElementById('name').value;
+            if(!name) return alert("성함을 입력해주세요.");
+
+            // 1. 고유 파트너 코드 생성 (M-XXXX)
+            const partnerCode = "M-" + Math.floor(1000 + Math.random() * 9000);
+            // 2. 오늘 날짜 (YYYY-MM-DD)
+            const today = new Date().toISOString().split('T')[0];
+            const categories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value);
+
+            const formData = {
+                date: today,
+                code: partnerCode,
+                name: name,
+                insta_id: document.getElementById('insta_id').value,
+                insta_fol: document.getElementById('insta_fol').value,
+                tiktok_id: document.getElementById('tiktok_id').value,
+                tiktok_fol: document.getElementById('tiktok_fol').value,
+                youtube_id: document.getElementById('youtube_id').value,
+                youtube_fol: document.getElementById('youtube_fol').value,
+                region: document.getElementById('region').value,
+                category: categories.join(', ')
+            };
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "처리 중...";
+            submitBtn.disabled = true;
+
+            // 💡 리더님의 앱스스크립트 주소 입력
+            fetch('여기에_앱스스크립트_URL_입력', {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => {
+                alert(`신청 완료!\n파트너 코드: ${partnerCode}\n코드를 꼭 기억해주세요.`);
+                location.reload();
+            })
+            .catch(err => {
+                alert("서버 연결 실패 (전송은 안되었으나 코드는 생성됨)");
+                submitBtn.innerText = "신청하기";
+                submitBtn.disabled = false;
+            });
+        }
     </script>
 </body>
 </html>
