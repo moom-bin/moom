@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MooM : Made out of Max</title>
+    <title>MooM : Make out of Max</title>
     
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
@@ -70,6 +70,11 @@
         .check-label { display:inline-block; padding:8px 15px; border-radius:30px; border:1px solid #333; font-size:13px; cursor:pointer; background:#1a1a1a; color:#888; transition:0.2s; }
         input[type="checkbox"] { display: none; }
         input[type="checkbox"]:checked + .check-label { color:#000; background:var(--main-accent); font-weight: 700; }
+        input[type="radio"]:checked + .check-label { 
+    color:#000; 
+    background:var(--main-accent) !important; 
+    font-weight: 800; 
+}
         .btn-submit { width:100%; padding:20px; background:var(--main-accent); color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; font-size:18px; }
         .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; }
 #join-stage {
@@ -79,10 +84,20 @@
 #join-stage::-webkit-scrollbar {
     display: none; /* 크롬, 사파리, 오페라 등 */
 }
+/* [성공 팝업 디자인] */
+.modal-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.85); display: flex; align-items: center; 
+    justify-content: center; z-index: 2000; 
+}
+.modal-content { 
+    background: #111; border: 2px solid var(--main-accent); padding: 40px; 
+    border-radius: 25px; text-align: center; max-width: 400px; width: 90%; 
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); 
+}
     </style>
 </head>
 <body>
-
     <div id="loading-stage">
         <div class="loading-text">Loading...</div>
         <img src="logo.jpg" alt="MooM Logo" class="loading-logo">
@@ -108,14 +123,53 @@
         </div>
     </div>
 
+        <div id="influencer-menu-stage" class="hidden" style="text-align: center; width: 95%; max-width: 1100px;">
+    <a class="back-link" onclick="location.reload()" style="cursor:pointer; color:#888; display:block; margin-bottom:20px; text-decoration:none;">&larr; 메인으로 돌아가기</a>
+    
+    <div class="intro-text" style="margin-bottom: 50px;">
+        <h1>MooM for Influencer</h1>
+        <h2>영향력을 MAX로 키우는 인플루언서 전용 메뉴입니다.</h2>
+    </div>
+
+    <div class="choice-container">
+        <a class="choice-btn" id="go-to-join">
+            <h3>MooM 파트너 가입</h3>
+            <p>신규 파트너 신청서를 작성합니다.</p>
+        </a>
+        <a class="choice-btn" id="go-to-guide">
+            <h3>톡방 활용 가이드</h3>
+            <p>MooM 톡방 200% 활용법 확인하기</p>
+        </a>
+    </div>
+</div>
+
+    <div id="guide-stage" class="hidden" style="width: 95%; max-width: 800px; margin: 0 auto; text-align: center;">
+        <a class="back-link" id="back-from-guide" style="cursor:pointer; color:#888; display:block; margin-bottom:20px; text-decoration:none;">&larr; 이전으로 돌아가기</a>
+        <h1 style="font-size: 2.2rem; margin-bottom: 20px;">MooM <span>200%</span> 활용하기</h1>
+        <div class="guide-box" style="background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 30px; border-radius: 20px; text-align: left;">
+            <div class="guide-item" style="margin-bottom:20px;">
+                <h4 style="color:var(--main-accent); margin-bottom:8px;">🔔 원하는 알림만 쏙쏙</h4>
+                <p style="color:#888; line-height:1.6;">신청서에서 설정한 카테고리에 맞춰 맞춤형 공고 알림을 드립니다.</p>
+            </div>
+            <div class="guide-item" style="margin-bottom:20px;">
+                <h4 style="color:var(--main-accent); margin-bottom:8px;">⚡️ 공고 확인은 누구보다 빠르게</h4>
+                <p style="color:#888; line-height:1.6;">인기 캠페인은 10분 내 마감되니 오픈톡방 알림 설정은 필수입니다.</p>
+            </div>
+            <div class="guide-item">
+                <h4 style="color:var(--main-accent); margin-bottom:8px;">🤝 매너 있는 커뮤니티</h4>
+                <p style="color:#888; line-height:1.6;">노쇼 및 직거래 적발 시 제명될 수 있으니 규정을 준수해 주세요.</p>
+            </div>
+        </div>
+    </div>
+
     <div id="join-stage" class="hidden">
-        <a class="back-link" id="back-to-select" href="#">&larr; 돌아가기</a>
+        <a class="back-link" id="back-to-menu" style="cursor:pointer;">&larr; 돌아가기</a>
         <div class="split-container">
             <div class="desc-section">
                 <h1>영향력을 <span>MAX</span>로<br>키우는 현명한 방법</h1>
                 <p><span>뭄(MooM)</span>은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 인플루언서 커뮤니티입니다.</p>
                 <p class="point-p">✨ 소속 제한 절대 없습니다!</p>
-                <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요. 원하지 않는 건은 부담 없이 넘기시면 됩니다.</p>
+                <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요.</p>
                 <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. <span>MooM</span>과 함께 성장해 보세요!</p>
             </div>
 
@@ -125,30 +179,43 @@
 
     <label>활동명</label>
     <input type="text" id="name" placeholder="활동명을 입력하세요">
+    
+    <label>성별</label>
+    <div class="checkbox-group" style="margin-bottom: 10px;">
+        <input type="radio" id="gender_f" name="gender" value="여성" style="display:none;">
+        <label for="gender_f" class="check-label" style="flex: 1; text-align: center;">여성</label>
+        
+        <input type="radio" id="gender_m" name="gender" value="남성" style="display:none;">
+        <label for="gender_m" class="check-label" style="flex: 1; text-align: center;">남성</label>
+    </div>
 
     <label>인스타그램</label>
     <div class="channel-group">
         <input type="text" id="insta_id" placeholder="ID (@제외)">
-        <input type="number" id="insta_fol" placeholder="팔로워 수">
+        <input type="text" id="insta_fol" placeholder="팔로워 수" oninput="formatNumber(this)">
     </div>
+    <div class="helper-text" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 5px;">숫자만 입력해 주세요.</div>
 
     <label>틱톡</label>
     <div class="channel-group">
         <input type="text" id="tiktok_id" placeholder="ID/링크">
-        <input type="number" id="tiktok_fol" placeholder="팔로워 수">
+        <input type="text" id="tiktok_fol" placeholder="팔로워 수" oninput="formatNumber(this)">
     </div>
+    <div class="helper-text" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 5px;">숫자만 입력해 주세요.</div>
 
     <label>블로그</label>
     <div class="channel-group">
         <input type="text" id="blog_id" placeholder="블로그 주소/ID">
-        <input type="number" id="blog_vis" placeholder="일평균 방문자">
+        <input type="text" id="blog_vis" placeholder="일평균 방문자" oninput="formatNumber(this)">
     </div>
+    <div class="helper-text" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 5px;">숫자만 입력해 주세요.</div>
 
     <label>유튜브</label>
     <div class="channel-group">
         <input type="text" id="youtube_id" placeholder="채널명">
-        <input type="number" id="youtube_fol" placeholder="구독자 수">
+        <input type="text" id="youtube_fol" placeholder="구독자 수" oninput="formatNumber(this)">
     </div>
+    <div class="helper-text" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 5px;">숫자만 입력해 주세요.</div>
 
     <label>주 활동 지역</label>
     <select id="region">
@@ -157,7 +224,7 @@
         <option value="대전">대전</option>
         <option value="대구">대구</option>
         <option value="부산">부산</option>
-        <option value="기기타">기타 지역</option>
+        <option value="기타">기타 지역</option>
     </select>
 
     <label>관심 카테고리 (중복 선택)</label>
@@ -171,8 +238,8 @@
         <input type="checkbox" id="cat7" name="category" value="공구"><label for="cat7" class="check-label">공구</label>
     </div>
 
-<div class="agree-box" style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; line-height: 1.6;">
-    <strong>[개인정보 수집 및 활동 규정]</strong><br>
+    <div class="agree-box" style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; line-height: 1.6;">
+        <strong>[개인정보 수집 및 활동 규정]</strong><br>
     1. <strong>수집항목:</strong> 성명, SNS 계정정보(ID/팔로워수), 활동지역, 관심카테고리<br>
     2. <strong>이용목적:</strong> MooM 캠페인 매칭, 파트너 관리 및 본인 확인<br>
     3. <strong>제3자 제공:</strong> 캠페인 선정을 위해 광고주(브랜드사)에게 파트너 정보가 제공될 수 있습니다.<br>
@@ -192,78 +259,133 @@
 
     <button class="btn-submit" id="submitBtn" onclick="submitForm()" disabled>신청하기</button>
 </div>
-
-<script>
-    // 💡 두 개의 체크박스가 모두 체크되어야 버튼 활성화
-    const checks = document.querySelectorAll('.agree-check');
-    const submitBtn = document.getElementById('submitBtn');
-
-    checks.forEach(check => {
-        check.addEventListener('change', () => {
-            const allChecked = Array.from(checks).every(c => c.checked);
-            submitBtn.disabled = !allChecked;
-        });
-    });
-</script>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const loadingBar = document.getElementById('loading-bar');
-            const stages = { loading: document.getElementById('loading-stage'), select: document.getElementById('select-stage'), join: document.getElementById('join-stage') };
-            let width = 0;
-            const loadingInterval = setInterval(() => {
-                if (width >= 100) { clearInterval(loadingInterval); stages.loading.classList.add('hidden'); stages.select.classList.remove('hidden'); }
-                else { width += 1.5; loadingBar.style.width = Math.min(width, 100) + '%'; }
-            }, 30);
-            function showStage(stageToShow) { Object.values(stages).forEach(stage => stage.classList.add('hidden')); stageToShow.classList.remove('hidden'); window.scrollTo(0, 0); }
-            document.getElementById('to-influencer').onclick = (e) => { e.preventDefault(); showStage(stages.join); };
-            document.getElementById('back-to-select').onclick = (e) => { e.preventDefault(); showStage(stages.select); };
-            document.getElementById('agree').onchange = (e) => { document.getElementById('submitBtn').disabled = !e.target.checked; };
-        });
-
-        function submitForm() {
-            const name = document.getElementById('name').value;
-            if(!name) return alert("성함을 입력해주세요.");
-
-            // 1. 고유 파트너 코드 생성 (M-XXXX)
-            const partnerCode = "M-" + Math.floor(1000 + Math.random() * 9000);
-            // 2. 오늘 날짜 (YYYY-MM-DD)
-            const today = new Date().toISOString().split('T')[0];
-            const categories = Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value);
-
-            const formData = {
-                date: today,
-                code: partnerCode,
-                name: name,
-                insta_id: document.getElementById('insta_id').value,
-                insta_fol: document.getElementById('insta_fol').value,
-                tiktok_id: document.getElementById('tiktok_id').value,
-                tiktok_fol: document.getElementById('tiktok_fol').value,
-                youtube_id: document.getElementById('youtube_id').value,
-                youtube_fol: document.getElementById('youtube_fol').value,
-                region: document.getElementById('region').value,
-                category: categories.join(', ')
+            const stages = {
+                loading: document.getElementById('loading-stage'),
+                select: document.getElementById('select-stage'),
+                infMenu: document.getElementById('influencer-menu-stage'),
+                join: document.getElementById('join-stage'),
+                guide: document.getElementById('guide-stage')
             };
 
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerText = "처리 중...";
-            submitBtn.disabled = true;
+            // 로딩바
+            let width = 0;
+            const loadingInterval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loadingInterval);
+                    stages.loading.classList.add('hidden');
+                    stages.select.classList.remove('hidden');
+                } else {
+                    width += 1.5;
+                    document.getElementById('loading-bar').style.width = Math.min(width, 100) + '%';
+                }
+            }, 30);
 
-            // 💡 리더님의 앱스스크립트 주소 입력
-            fetch('여기에_앱스스크립트_URL_입력', {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            })
-            .then(res => {
-                alert(`신청 완료!\n파트너 코드: ${partnerCode}\n코드를 꼭 기억해주세요.`);
-                location.reload();
-            })
-            .catch(err => {
-                alert("서버 연결 실패 (전송은 안되었으나 코드는 생성됨)");
-                submitBtn.innerText = "신청하기";
-                submitBtn.disabled = false;
+            // 화면 전환 함수
+            function show(stage) {
+                Object.values(stages).forEach(s => s ? s.classList.add('hidden') : null);
+                stage.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }
+
+            // 클릭 이벤트
+            document.getElementById('to-influencer').onclick = () => show(stages.infMenu);
+            document.getElementById('go-to-join').onclick = () => show(stages.join);
+            document.getElementById('go-to-guide').onclick = () => show(stages.guide);
+            document.getElementById('back-to-menu').onclick = () => show(stages.infMenu);
+            document.getElementById('back-from-guide').onclick = () => show(stages.infMenu);
+
+            // 체크박스 로직
+            const checks = document.querySelectorAll('.agree-check');
+            checks.forEach(c => c.onchange = () => {
+                document.getElementById('submitBtn').disabled = !Array.from(checks).every(v => v.checked);
             });
-        }
+        });
+
+
+// 1. 숫자를 한글 단위(만)로 변환하는 엔진
+function numberToKorean(number) {
+    if (number == 0) return "";
+    const unitWords = ['', '만', '억'];
+    let result = ''; let unitIdx = 0;
+    while (number > 0) {
+        let chunk = number % 10000;
+        if (chunk > 0) result = chunk.toLocaleString() + unitWords[unitIdx] + ' ' + result;
+        number = Math.floor(number / 10000); unitIdx++;
+    }
+    return result.trim() + " 명";
+}
+
+// 2. 입력창에 숫자 입력 시 실시간 콤마 + 한글 단위 표시 함수
+function formatNumber(el) {
+    let raw = el.value.replace(/[^0-9]/g, ''); // 숫자 이외의 문자 제거
+    el.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 3자리마다 콤마
+    let helper = el.closest('.channel-group').nextElementSibling; // 바로 아래 helper-text 찾기
+    
+    if (helper && helper.classList.contains('helper-text')) {
+        helper.innerText = raw > 0 ? numberToKorean(Number(raw)) : "숫자만 입력해 주세요.";
+        helper.style.color = raw > 0 ? "var(--main-accent)" : "#666";
+    }
+}
+
+// 3. 폼 전송 함수 (틱톡, 유튜브 등 모든 데이터 포함 버전)
+function submitForm() {
+    const name = document.getElementById('name').value;
+    if(!name) return alert("성함을 입력해주세요.");
+
+    const partnerCode = "M-" + Math.floor(1000 + Math.random() * 9000);
+    const getVal = (id) => document.getElementById(id) ? document.getElementById(id).value : "";
+    const getNum = (id) => document.getElementById(id) ? document.getElementById(id).value.replace(/,/g, '') : "0";
+
+    const formData = {
+        date: new Date().toISOString().split('T')[0],
+        code: partnerCode,
+        name: name,
+        gender: document.querySelector('input[name="gender"]:checked') ?            document.querySelector('input[name="gender"]:checked').value : "미선택", // 성별 데이터 추가
+        insta_id: getVal('insta_id'),
+        insta_fol: getNum('insta_fol'),
+        tiktok_id: getVal('tiktok_id'),
+        tiktok_fol: getNum('tiktok_fol'),
+        blog_id: getVal('blog_id'),
+        blog_vis: getNum('blog_vis'),
+        youtube_id: getVal('youtube_id'),
+        youtube_fol: getNum('youtube_fol'),
+        region: getVal('region'),
+        category: Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value).join(', ')
+    };
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerText = "처리 중...";
+    submitBtn.disabled = true;
+
+    // 💡 아래 URL 부분에 리더님의 앱스스크립트 주소를 꼭 넣으세요!
+    fetch('https://script.google.com/macros/s/AKfycbxoolRUfLwiQlXCuKIhaB1t6PMf0l0aAT3ninW3_jBDEzJQGFHN_h1ThA5u9ydC4G8Z/exec', {
+        method: 'POST',
+        body: JSON.stringify(formData)
+    })
+    .then(res => {
+        // 커스텀 팝업 알림
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3 style="color:var(--main-accent); margin-bottom:15px;">신청 완료!</h3>
+                <p style="color:#ccc; line-height:1.6;">파트너 코드: <strong>${partnerCode}</strong><br><br>코드를 기억해 주세요.<br>순차적으로 오픈톡방 링크를 보내드리겠습니다.</p>
+                <button class="modal-btn" onclick="location.reload()" style="background:var(--main-accent); color:#000; padding:12px 25px; border-radius:10px; border:none; font-weight:800; cursor:pointer; width:100%; margin-top:20px;">확인</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    })
+    .catch(err => {
+        alert("전송 실패. 다시 시도해 주세요.");
+        submitBtn.innerText = "신청하기";
+        submitBtn.disabled = false;
+    });
+}
     </script>
 </body>
 </html>
