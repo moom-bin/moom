@@ -95,6 +95,50 @@
     border-radius: 25px; text-align: center; max-width: 400px; width: 90%; 
     box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); 
 }
+/* [수정] body: 푸터 공간을 확보하면서도 중앙 정렬을 유지하는 설정 */
+        body { 
+            font-family: var(--font-family); background-color: var(--bg-color); color: white; 
+            overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
+            justify-content: flex-start; margin: 0;
+        }
+
+        /* 각 스테이지가 화면 꽉 차게 중앙에 오도록 보정 */
+        #loading-stage, #select-stage, #influencer-menu-stage { 
+            width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 0;
+        }
+        #join-stage { 
+            width: 95%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; flex: 1; padding: 40px 0;
+        }
+
+        /* [문제 2 해결] 정책 팝업: 스크롤 상관없이 화면 정중앙 고정 */
+        .policy-modal { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 9999; 
+        }
+        .policy-content { 
+            background: #111; width: 90%; max-width: 500px; max-height: 80vh; 
+            border: 1px solid #333; border-radius: 25px; padding: 35px; overflow-y: auto; 
+            color: #ccc; font-size: 13px; text-align: left; word-break: keep-all; 
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); 
+        }
+        .policy-content h3 { color: var(--main-accent); margin-bottom: 20px; font-size: 18px; font-weight: 800; }
+        .policy-content b { color: #fff; font-weight: 700; }
+        .policy-close-btn { width: 100%; margin-top: 25px; padding: 15px; background: #1a1a1a; border: 1px solid #333; color: #888; border-radius: 12px; cursor: pointer; font-weight: 600; }
+
+        /* [문제 3 해결] 푸터: 좌우 양끝 정렬 디테일 */
+        footer { 
+            width: 100%; max-width: 1100px; padding: 40px 20px; border-top: 1px solid #222; 
+            margin: 40px auto 0; display: flex; justify-content: space-between; align-items: flex-end; 
+            color: #555; font-size: 11px; line-height: 1.6; flex-shrink: 0;
+        }
+        .footer-left { text-align: left; flex: 1; }
+        .footer-right { text-align: right; flex: 1; }
+        .footer-links { margin-bottom: 10px; }
+        .footer-links a { color: #888; text-decoration: none; margin-right: 15px; font-weight: 600; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .footer-links a:hover { color: var(--main-accent); }
+
+        /* 가이드 스테이지 예외 처리: 다른 레이어보다 위에 있도록 */
+        #guide-stage { z-index: 5000; }
     </style>
 </head>
 <body>
@@ -121,6 +165,19 @@
                 <p>소속 계약 없이, 원하는 기회만 선택하여 영향력을 MAX로 키워보세요.</p>
             </a>
         </div>
+<footer>
+    <div class="footer-left">
+        <div class="footer-links">
+            <a onclick="openPolicy('manager')">개인정보보호책임자</a>
+            <a onclick="openPolicy('privacy')">개인정보처리방침</a>
+            <a onclick="openPolicy('terms')">이용약관</a>
+        </div>
+        <p style="color:#999; font-weight: 700;">본 시스템의 로직, 디자인 및 모든 콘텐츠는 저작권법의 보호를 받습니다.<br>무단 도용, 복제 및 재가공 시 민·형사상 책임을 물을 수 있습니다.</p>
+    </div>
+    <div class="footer-right">
+        <p>상호: 주식회사 씨앤씨 · 대표: 한영민 · 사업자등록번호: 502-87-03203<br>주소: 강원도 원주시 무실로 117 · 이메일: kr.moom.contact@gmail.com<br>Copyright © MooM. All rights reserved.</p>
+    </div>
+</footer>
     </div>
 
         <div id="influencer-menu-stage" class="hidden" style="text-align: center; width: 95%; max-width: 1100px;">
@@ -194,33 +251,36 @@
     </div>
 
     <div id="join-stage" class="hidden">
+    <div style="width: 100%; max-width: 1100px; text-align: left; margin-bottom: 20px;">
         <a class="back-link" id="back-to-menu" style="cursor:pointer;">&larr; 돌아가기</a>
-        <div class="split-container">
-            <div class="desc-section">
-                <h1>영향력을 <span>MAX</span>로<br>키우는 현명한 방법</h1>
-                <p><span>뭄(MooM)</span>은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 인플루언서 커뮤니티입니다.</p>
-                <p class="point-p">✨ 소속 제한 절대 없습니다!</p>
-                <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요.</p>
-                <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. <span>MooM</span>과 함께 성장해 보세요!</p>
-            </div>
-
-            <div class="form-box">
-    <h3 style="color: #fff; font-size: 22px; margin-bottom: 5px; font-weight: 800;">무료 가입 신청</h3>
-    <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Made out of Max, 당신의 가치를 증명하세요.</p>
-
-    <label>활동명</label>
-    <input type="text" id="name" placeholder="활동명을 입력하세요">
-    
-    <label>성별</label>
-    <div class="checkbox-group" style="margin-bottom: 10px;">
-        <input type="radio" id="gender_f" name="gender" value="여성" style="display:none;">
-        <label for="gender_f" class="check-label" style="flex: 1; text-align: center;">여성</label>
-        
-        <input type="radio" id="gender_m" name="gender" value="남성" style="display:none;">
-        <label for="gender_m" class="check-label" style="flex: 1; text-align: center;">남성</label>
     </div>
 
-    <label>인스타그램</label>
+    <div class="split-container" style="display: flex; width: 100%; max-width: 1100px; gap: 30px; margin-bottom: 80px; align-items: flex-start;">
+        
+        <div class="desc-section" style="flex: 1;">
+            <h1>영향력을 <span>MAX</span>로<br>키우는 현명한 방법</h1>
+            <p><span>뭄(MooM)</span>은 단순한 협찬방이 아닌, 파트너님의 성장을 돕는 인플루언서 커뮤니티입니다.</p>
+            <p class="point-p">✨ 소속 제한 절대 없습니다!</p>
+            <p>톡방에 공고가 올라오면 관심 있는 건만 골라서 참여하세요.</p>
+            <p>의류, 화장품, 숙소, 페스티벌 등 다양한 카테고리의 기회가 준비되어 있습니다. <span>MooM</span>과 함께 성장해 보세요!</p>
+        </div>
+
+        <div class="form-box" style="flex: 1.4;">
+            <h3 style="color: #fff; font-size: 22px; margin-bottom: 5px; font-weight: 800;">커뮤니티 가입 신청</h3>
+            <p style="color: #888; font-size: 14px; margin-bottom: 20px;">Made out of Max, 당신의 가치를 증명하세요.</p>
+
+            <label>활동명</label>
+            <input type="text" id="name" placeholder="활동명을 입력하세요">
+            
+            <label>성별</label>
+            <div class="checkbox-group" style="margin-bottom: 10px;">
+                <input type="radio" id="gender_f" name="gender" value="여성" style="display:none;">
+                <label for="gender_f" class="check-label" style="flex: 1; text-align: center;">여성</label>
+                <input type="radio" id="gender_m" name="gender" value="남성" style="display:none;">
+                <label for="gender_m" class="check-label" style="flex: 1; text-align: center;">남성</label>
+            </div>
+
+            <label>인스타그램</label>
     <div class="channel-group">
         <input type="text" id="insta_id" placeholder="ID (@제외)">
         <input type="text" id="insta_fol" placeholder="팔로워 수" oninput="formatNumber(this)">
@@ -247,56 +307,66 @@
         <input type="text" id="youtube_fol" placeholder="구독자 수" oninput="formatNumber(this)">
     </div>
     <div class="helper-text" style="font-size: 11px; color: #666; margin-top: 4px; margin-left: 5px;">구독자는 숫자만 입력해 주세요.</div>
+            
+            <label>주 활동 지역</label>
+            <select id="region"><option value="서울">서울</option><option value="경기/인천">경기/인천</option><option value="대전">대전</option><option value="대구">대구</option><option value="부산">부산</option><option value="기타">기타 지역</option></select>
 
-    <label>주 활동 지역</label>
-    <select id="region">
-        <option value="서울">서울</option>
-        <option value="경기/인천">경기/인천</option>
-        <option value="대전">대전</option>
-        <option value="대구">대구</option>
-        <option value="부산">부산</option>
-        <option value="기타">기타 지역</option>
-    </select>
+            <label>관심 카테고리 (중복 선택)</label>
+            <div class="checkbox-group">
+                <input type="checkbox" id="cat1" name="category" value="뷰티"><label for="cat1" class="check-label">뷰티</label>
+                <input type="checkbox" id="cat2" name="category" value="패션"><label for="cat2" class="check-label">패션</label>
+                <input type="checkbox" id="cat3" name="category" value="맛집"><label for="cat3" class="check-label">맛집/카페</label>
+                <input type="checkbox" id="cat4" name="category" value="헬스"><label for="cat4" class="check-label">헬스</label>
+                <input type="checkbox" id="cat5" name="category" value="여행"><label for="cat5" class="check-label">여행</label>
+                <input type="checkbox" id="cat6" name="category" value="시술"><label for="cat6" class="check-label">시술</label>
+                <input type="checkbox" id="cat7" name="category" value="공구"><label for="cat7" class="check-label">공구</label>
+            </div>
 
-    <label>관심 카테고리 (중복 선택)</label>
-    <div class="checkbox-group">
-        <input type="checkbox" id="cat1" name="category" value="뷰티"><label for="cat1" class="check-label">뷰티</label>
-        <input type="checkbox" id="cat2" name="category" value="패션"><label for="cat2" class="check-label">패션</label>
-        <input type="checkbox" id="cat3" name="category" value="맛집"><label for="cat3" class="check-label">맛집/카페</label>
-        <input type="checkbox" id="cat4" name="category" value="헬스"><label for="cat4" class="check-label">헬스</label>
-        <input type="checkbox" id="cat5" name="category" value="여행"><label for="cat5" class="check-label">여행</label>
-        <input type="checkbox" id="cat6" name="category" value="시술"><label for="cat6" class="check-label">시술</label>
-        <input type="checkbox" id="cat7" name="category" value="공구"><label for="cat7" class="check-label">공구</label>
-    </div>
-
-    <div class="agree-box" style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; line-height: 1.6;">
+            <div class="agree-box" style="margin-top:20px; padding:15px; background:#1a1a1a; border-radius:12px; font-size:12px; color:#666; border:1px solid #222; line-height: 1.6;">
         <strong>[개인정보 수집 및 활동 규정]</strong><br>
-    1. <strong>수집항목:</strong> 성명, SNS 계정정보(ID/팔로워수), 활동지역, 관심카테고리<br>
-    2. <strong>이용목적:</strong> MooM 캠페인 매칭, 파트너 관리 및 본인 확인<br>
-    3. <strong>제3자 제공:</strong> 캠페인 선정을 위해 광고주(브랜드사)에게 파트너 정보가 제공될 수 있습니다.<br>
-    4. <strong>보유기간:</strong> 파트너 탈퇴 요청 시 혹은 목적 달성 시까지 (최대 1년 보관)<br>
-    <div style="display: flex; margin-top: 4px;">
-    <span style="flex-shrink: 0; margin-right: 5px;">5.</span>
-    <span style="word-break: keep-all;">
-        <strong>활동규정:</strong> 협찬 관련하여 제공된 모든 정보(조건, 금액, 진행 내용 등)의 외부 유출 및 광고주와의<br>
-        직거래 적발 시 자격 박탈 및 민·형사상 책임을 물을 수 있습니다.
-    </span>
-</div>
-    
-    <div style="margin-top:20px; text-align:left; display: flex; align-items: center; gap: 8px;">
+        1. <strong>수집항목:</strong> 성명, SNS 계정정보(ID/팔로워수), 활동지역, 관심카테고리<br>
+        2. <strong>이용목적:</strong> MooM 캠페인 매칭, 파트너 관리 및 본인 확인<br>
+        3. <strong>제3자 제공:</strong> 캠페인 선정을 위해 광고주(브랜드사)에게 파트너 정보가 제공될 수 있습니다.<br>
+        4. <strong>보유기간:</strong> 파트너 탈퇴 요청 시 혹은 목적 달성 시까지 (최대 1년 보관)<br>
+        <div style="display: flex; margin-top: 4px;">
+            <span style="flex-shrink: 0; margin-right: 5px;">5.</span>
+            <span style="word-break: keep-all;">
+                <strong>활동규정:</strong> 협찬 관련하여 제공된 모든 정보(조건, 금액, 진행 내용 등)의 외부 유출 및 광고주와의 
+                직거래 적발 시 자격 박탈 및 민·형사상 책임을 물을 수 있습니다.
+            </span>
+            </div>
+    </div> <div style="margin-top:20px; text-align:left; display: flex; align-items: center; gap: 8px;">
         <input type="checkbox" id="agree_rules" class="agree-check" style="width: 18px; height: 18px; cursor: pointer; display: block !important;">
         <label for="agree_rules" style="font-size:13px; cursor:pointer; color:#fff; margin:0;">활동 규정을 확인했으며 동의합니다. (필수)</label>
     </div>
-
     <div style="margin-top:10px; text-align:left; display: flex; align-items: center; gap: 8px;">
         <input type="checkbox" id="agree_privacy" class="agree-check" style="width: 18px; height: 18px; cursor: pointer; display: block !important;">
         <label for="agree_privacy" style="font-size:13px; cursor:pointer; color:#fff; margin:0;">개인정보 수집 및 이용에 동의합니다. (필수)</label>
     </div>
 
     <button class="btn-submit" id="submitBtn" onclick="submitForm()" disabled>신청하기</button>
-</div>
+        </div> </div> <footer style="width: 100%; max-width: 1100px; border-top: 1px solid #222; padding: 40px 20px; display: flex; justify-content: space-between; align-items: flex-end; margin: 0 auto;">
+        <div class="footer-left" style="text-align: left;">
+            <div class="footer-links" style="margin-bottom: 10px;">
+                <a onclick="openPolicy('manager')" style="color: #888; text-decoration: none; margin-right: 15px; font-weight: 600; cursor: pointer;">개인정보보호책임자</a>
+                <a onclick="openPolicy('privacy')" style="color: #888; text-decoration: none; margin-right: 15px; font-weight: 600; cursor: pointer;">개인정보처리방침</a>
+                <a onclick="openPolicy('terms')" style="color: #888; text-decoration: none; margin-right: 15px; font-weight: 600; cursor: pointer;">이용약관</a>
+            </div>
+            <p style="color:#999; font-weight: 700; font-size: 12px; line-height: 1.6;">
+                본 시스템의 로직, 디자인 및 모든 콘텐츠는 저작권법의 보호를 받습니다.<br>
+                무단 도용, 복제 및 재가공 시 민·형사상 책임을 물을 수 있습니다.
+            </p>
         </div>
-    </div>
+        <div class="footer-right" style="text-align: right; color: #555; font-size: 11px; line-height: 1.6;">
+            <p>
+                상호: 주식회사 씨앤씨 · 대표: 한영민 · 사업자등록번호: 502-87-03203<br>
+                주소: 강원도 원주시 무실로 117 · 이메일: kr.moom.contact@gmail.com<br>
+                Copyright © MooM. All rights reserved.
+            </p>
+        </div>
+    </footer>
+</div>
+</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -422,6 +492,50 @@ function submitForm() {
         submitBtn.disabled = false;
     });
 }
+const policyData = {
+    manager: {
+        title: "개인정보보호책임자",
+        body: "<b>성명:</b> 한빈<br><b>이메일:</b> kr.moom.contact@gmail.com<br><br>개인정보 관련 문의 및 권리 행사는 위 메일로 연락 주시면 지체 없이 조치하겠습니다."
+    },
+    privacy: {
+        title: "개인정보처리방침",
+        body: `<b>1. 개인정보 처리 목적:</b> MooM 파트너 가입 관리, 캠페인 매칭 및 안내, 부정 이용 방지.<br><br>
+               <b>2. 처리 항목:</b> 성함, 활동명, SNS 계정 정보(ID/팔로워수/방문자수), 활동 지역, 연락처.<br><br>
+               <b>3. 개인정보의 제3자 제공:</b> MooM은 캠페인 선정 및 브랜드 협업을 위해 파트너님이 제출한 프로필 정보를 <b>광고주(협력사)</b>에게 제공할 수 있습니다.<br><br>
+               <b>4. 보유 및 이용기간:</b> 가입 시부터 파트너 탈퇴 시까지 보유하며, 목적 달성 후 지체 없이 파기합니다. (단, 부정 이용 방지를 위해 6개월간 보관될 수 있음)`
+    },
+    terms: {
+        title: "MooM 이용약관",
+        body: `<b>제1조 (저작권 및 권리 귀속):</b><br>
+               MooM의 모든 시스템 로직, 디자인, 데이터베이스 및 제공되는 모든 콘텐츠의 지식재산권은 당사에 귀속됩니다. 무단 복제 및 재가공 시 민·형사상 책임을 물을 수 있습니다.<br><br>
+
+               <b>제2조 (직거래 금지 및 손해배상):</b><br>
+               ① 파트너가 MooM을 통해 광고주 정보를 인지하거나 연결된 경우, 해당 시점으로부터 <b>3개월 이내</b>에 발생한 해당 광고주와의 모든 거래는 MooM의 서비스를 통한 것으로 간주합니다.<br>
+               ② 파트너가 당사의 매칭과 별개로 광고주와 사전 연락이 있었다고 주장할 경우, 파트너는 <b>MooM의 공고 이전</b>에 해당 광고주와 교신한 객관적 증빙 자료를 제출해야 합니다.<br>
+               ③ 위 조항을 위반한 직거래 적발 시, 파트너는 발생 수익 전액에 해당하는 손해배상금 및 영업 방해에 따른 위약벌을 지급해야 하며 자격이 영구 박탈됩니다.<br><br>
+
+               <b>제3조 (정보 유출 금지):</b><br>
+               MooM 톡방 및 시스템을 통해 제공받은 캠페인 조건, 담당자 연락처 등의 정보 유출은 <b>영업비밀 침해</b>에 해당하며, 위반 시 법적 조치와 함께 손해액의 3배 이내의 징벌적 손해배상이 청구될 수 있습니다.`
+    }
+};
+function openPolicy(type) {
+    document.getElementById('policyTitle').innerHTML = policyData[type].title;
+    document.getElementById('policyBody').innerHTML = policyData[type].body;
+    document.getElementById('policyModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // 배경 스크롤 잠금
+}
+
+function closePolicy() {
+    document.getElementById('policyModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // 배경 스크롤 해제
+}
     </script>
+</div> <div id="policyModal" class="policy-modal" onclick="closePolicy()">
+    <div class="policy-content" onclick="event.stopPropagation()">
+        <h3 id="policyTitle"></h3>
+        <div id="policyBody"></div>
+        <button class="policy-close-btn" onclick="closePolicy()">닫기</button>
+    </div>
+</div>
 </body>
 </html>
