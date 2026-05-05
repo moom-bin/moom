@@ -18,7 +18,18 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-family); background-color: var(--bg-color); color: white; overflow-x: hidden; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: white;
+    /* overflow-x: hidden; 은 유지해도 좋습니다 */
+    overflow-y: auto !important; /* 브라우저 기본 스크롤 활성화 */
+    height: auto !important;     /* 고정 높이 해제 */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
         .fade-in { opacity: 0; animation: fadeIn 1s forwards; }
         .hidden { display: none !important; }
@@ -49,7 +60,7 @@
         .disabled-tag { font-size: 0.75rem; font-weight: 600; color: var(--point-color); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
 
         /* [STAGE 3] 가입 페이지 (문구 100% 보존) */
-        #join-stage { width: 95%; max-width: 1100px; padding: 30px 0; animation: fadeIn 1s forwards; overflow-y: auto; height: 95vh;}
+        
         .back-link { color: #888; text-decoration: none; margin-bottom: 25px; display: inline-block; font-size: 1rem;}
         .back-link:hover { color: var(--main-accent); }
         .split-container { display: flex; gap: 30px; align-items: stretch; }
@@ -77,12 +88,6 @@
 }
         .btn-submit { width:100%; padding:20px; background:var(--main-accent); color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; font-size:18px; }
         .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; }
-#join-stage {
-    -ms-overflow-style: none; /* 인터넷 익스플로러 */
-    scrollbar-width: none; /* 파이어폭스 */
-}
-#join-stage::-webkit-scrollbar {
-    display: none; /* 크롬, 사파리, 오페라 등 */
 }
 /* [성공 팝업 디자인] */
 .modal-overlay { 
@@ -96,19 +101,31 @@
     box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); 
 }
 /* [수정] body: 푸터 공간을 확보하면서도 중앙 정렬을 유지하는 설정 */
-        body { 
-            font-family: var(--font-family); background-color: var(--bg-color); color: white; 
-            overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
-            justify-content: flex-start; margin: 0;
-        }
+        body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: white;
+    /* overflow-x: hidden; 은 유지해도 좋습니다 */
+    overflow-y: auto !important; /* 브라우저 기본 스크롤 활성화 */
+    height: auto !important;     /* 고정 높이 해제 */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
         /* 각 스테이지가 화면 꽉 차게 중앙에 오도록 보정 */
         #loading-stage, #select-stage, #influencer-menu-stage { 
             width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px 0;
         }
         #join-stage { 
-            width: 95%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; flex: 1; padding: 40px 0;
-        }
+    width: 95%; 
+    max-width: 1100px; 
+    padding: 30px 0; 
+    animation: fadeIn 1s forwards; 
+    overflow-y: visible; /* 내부 스크롤 끄기 */
+    height: auto;       /* 높이 제한 풀기 */
+}
 
         /* [문제 2 해결] 정책 팝업: 스크롤 상관없이 화면 정중앙 고정 */
         .policy-modal { 
