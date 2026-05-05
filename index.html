@@ -155,7 +155,18 @@
         .footer-links a:hover { color: var(--main-accent); }
 
         /* 가이드 스테이지 예외 처리: 다른 레이어보다 위에 있도록 */
-        #guide-stage { z-index: 5000; }
+        #guide-stage { 
+    z-index: 5000; 
+    width: 100%;
+    overflow-y: visible !important; /* 내부 스크롤 해제 */
+    height: auto !important;       /* 높이 제한 해제 */
+    display: none;                  /* 기본 숨김 */
+}
+
+/* stage가 활성화되었을 때 JS가 hidden을 제거하면 block으로 보이게 설정 */
+#guide-stage:not(.hidden) {
+    display: block;
+}
 /* --- 모바일(폰) 전용 보정 --- */
 @media (max-width: 768px) {
     /* 1. 전체 여백 조정 */
@@ -276,7 +287,7 @@
     </div>
 </div>
 
-    <div id="guide-stage" class="hidden" style="width: 100vw; height: 100vh; overflow-y: auto; position: fixed; top: 0; left: 0; background: var(--bg-color); z-index: 1000; padding: 40px 0 80px; -ms-overflow-style: none; scrollbar-width: none;">
+    <div id="guide-stage" class="hidden" style="width: 100%; min-height: 100vh; background: var(--bg-color); z-index: 1000; padding: 40px 0 80px;">
         <div style="width: 95%; max-width: 500px; margin: 0 auto; text-align: center;">
             
             <div style="text-align: left; margin-bottom: 30px;">
