@@ -139,6 +139,57 @@
 
         /* 가이드 스테이지 예외 처리: 다른 레이어보다 위에 있도록 */
         #guide-stage { z-index: 5000; }
+/* --- 모바일(폰) 전용 보정 --- */
+@media (max-width: 768px) {
+    /* 1. 전체 여백 조정 */
+    body { padding: 10px; }
+    
+    /* 2. 가로 배치를 세로 배치로 변경 (가장 중요) */
+    .split-container {
+        flex-direction: column !important; /* 좌우가 아닌 위아래로 */
+        align-items: center;
+        gap: 20px !important;
+    }
+
+    /* 3. 박스 너비 100%로 꽉 채우기 */
+    .desc-section, .form-box {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 25px !important; /* 모바일은 패딩을 조금 줄임 */
+    }
+
+    /* 4. 글자 잘림 방지 (단어 단위로 끊기) */
+    h1, h2, h3, p {
+        word-break: keep-all !important; /* 단어가 도중에 안 잘림 */
+        overflow-wrap: break-word;
+    }
+
+    /* 5. 텍스트 크기 최적화 */
+    .desc-section h1 { font-size: 1.8rem !important; line-height: 1.3; }
+    .intro-text h1 { font-size: 2rem !important; }
+    .intro-text h2 { font-size: 1.1rem !important; }
+
+    /* 6. 가입 신청 버튼/입력창 크기 조절 */
+    input, select, .btn-submit {
+        font-size: 16px !important; /* 아이폰 자동 줌 방지 */
+    }
+    
+    .choice-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    /* 7. 푸터 모바일 대응 (좌우 정렬 해제하고 세로로) */
+    footer {
+        flex-direction: column !important;
+        text-align: center !important;
+        align-items: center !important;
+        gap: 20px;
+    }
+    .footer-left, .footer-right {
+        text-align: center !important;
+    }
+}
     </style>
 </head>
 <body>
