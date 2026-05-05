@@ -86,33 +86,49 @@
     background:var(--main-accent) !important; 
     font-weight: 800; 
 }
+        /* --- CSS 수정 시작 (이 위치를 찾아서 덮어쓰세요) --- */
+
         .btn-submit { width:100%; padding:20px; background:var(--main-accent); color:#000; font-weight:900; border:none; border-radius:15px; cursor:pointer; margin-top:25px; font-size:18px; }
         .btn-submit:disabled { background:#333; color:#555; cursor:not-allowed; }
-}
-/* [성공 팝업 디자인] */
-.modal-overlay { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.85); display: flex; align-items: center; 
-    justify-content: center; z-index: 2000; 
-}
-.modal-content { 
-    background: #111; border: 2px solid var(--main-accent); padding: 40px; 
-    border-radius: 25px; text-align: center; max-width: 400px; width: 90%; 
-    box-shadow: 0 0 30px rgba(0, 242, 254, 0.2); 
-}
-/* [수정] body: 푸터 공간을 확보하면서도 중앙 정렬을 유지하는 설정 */
+
+        /* [성공 팝업 디자인] - 화면 중앙 고정 */
+        .modal-overlay { 
+            position: fixed !important; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            background: rgba(0, 0, 0, 0.9); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 99999 !important; 
+        }
+
+        .modal-content { 
+            background: #111; 
+            border: 2px solid var(--main-accent); 
+            padding: 40px 30px; 
+            border-radius: 25px; 
+            text-align: center; 
+            max-width: 350px; 
+            width: 85%; 
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.3); 
+            animation: fadeIn 0.3s ease-out; 
+        }
+
+        /* [수정] body 설정 */
         body {
-    font-family: var(--font-family);
-    background-color: var(--bg-color);
-    color: white;
-    /* overflow-x: hidden; 은 유지해도 좋습니다 */
-    overflow-y: auto !important; /* 브라우저 기본 스크롤 활성화 */
-    height: auto !important;     /* 고정 높이 해제 */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: white;
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+/* --- CSS 수정 끝 --- */
 
         /* 각 스테이지가 화면 꽉 차게 중앙에 오도록 보정 */
         #loading-stage, #select-stage, #influencer-menu-stage { 
@@ -591,6 +607,9 @@ function submitForm() {
             </div>
         `;
         document.body.appendChild(modal);
+
+// [추가] 팝업 뜨면 뒷배경 스크롤 방지
+document.body.style.overflow = 'hidden';
     })
     .catch(err => {
         alert("전송 실패. 다시 시도해 주세요.");
